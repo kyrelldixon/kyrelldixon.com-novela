@@ -1,38 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-export class EmailForm extends Component {
-  constructor() {
-    super();
-    this.state = { message: '' };
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+const EmailForm = () => {
+  const [message, setMessage] = useState('')
 
-  onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ message: 'Thank you!' });
+    setMessage('Thank you!');
     setTimeout(() => {
-      this.setState({ message: '' });
+      setMessage('');
     }, 3000);
   }
 
-  render() {
-    const { message } = this.state;
-    return (
-      <form id="signup-form" onSubmit={this.onSubmit} method="post" action="#">
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Enter email for updates"
-        />
-        <input type="submit" value="Sign Up" />
-        <span className={`${message ? 'visible success' : ''} message`}>
-          {message}
-        </span>
-      </form>
-    );
-  }
+  return (
+    <form id="signup-form" onSubmit={onSubmit} method="post" action="#">
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Enter email for updates"
+      />
+      <input type="submit" value="Sign Up" />
+      <span className={`${message ? 'visible success' : ''} message`}>
+        {message}
+      </span>
+    </form>
+  );
 }
 
 export default EmailForm;
