@@ -1,7 +1,7 @@
 import React from 'react';
 import config from '../../config';
 
-export default function Footer() {
+const Footer = () => {
   return (
     <footer id="footer">
       <ul className="icons">
@@ -22,3 +22,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default Footer;

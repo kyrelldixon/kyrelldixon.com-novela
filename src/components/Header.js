@@ -1,8 +1,7 @@
 import React from 'react';
-
 import config from '../../config';
 
-export default function Footer() {
+const Header = () => {
   return (
     <header id="header">
       <h1>{config.heading}</h1>
@@ -10,3 +9,5 @@ export default function Footer() {
     </header>
   );
 }
+
+export default Header;
