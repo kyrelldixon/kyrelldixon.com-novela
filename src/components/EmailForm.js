@@ -25,7 +25,7 @@ const EmailForm = () => {
       case 'success':
         return 'visible success';
       case 'error':
-        return 'visible error';
+        return 'visible failure';
       default:
         return '';
     }
