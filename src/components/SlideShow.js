@@ -1,60 +1,50 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default class SlideShow extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      pos: 0,
-      lastPos: 0,
-    };
-    this.rotateSlide = this.rotateSlide.bind(this);
-  }
+const SlideShow = ({ settings }) => {
+  const [position, setPosition] = useState(0);
+  const [lastPosition, setLastPosition] = useState(0);
 
-  rotateSlide() {
-    const { settings } = this.props;
+  const rotateSlide = () => {
+    console.log('function called')
     setInterval(() => {
-      let { pos, lastPos } = this.state;
-      lastPos = pos;
-      pos++;
+      setLastPosition(position);
+      setPosition((pos) => pos + 1);
 
-      if (pos >= settings.images.length) {
-        pos = 0;
+      if (position >= settings.images.length) {
+        setPosition(0);
       }
 
       // Hide last image after a short delay.
       setTimeout(() => {
-        lastPos = pos;
-        this.setState({ lastPos });
+        setLastPosition(position);
       }, settings.delay / 2);
 
-      this.setState({ lastPos, pos });
     }, settings.delay);
   }
-  componentDidMount() {
-    this.rotateSlide();
-  }
-  render() {
-    const { pos, lastPos } = this.state;
-    const { settings } = this.props;
 
-    return (
-      <div id="bg">
-        {settings.images.map((image, i) => {
-          return (
-            <div
-              key={image['url']}
-              style={{
-                backgroundPosition: image['position'],
-                backgroundImage: `url("${image['url']}")`,
-              }}
-              className={
-                i === pos ? 'visible top' : i === lastPos ? 'visible' : ''
-              }
-            />
-          );
-        })}
-        ;
-      </div>
-    );
-  }
+  useEffect(() => {
+    rotateSlide();
+  }, [])
+
+  return (
+    <div id="bg">
+      {settings.images.map((image, i) => {
+        return (
+          <div
+            key={image['url']}
+            style={{
+              backgroundPosition: image['position'],
+              backgroundImage: `url("${image['url']}")`,
+            }}
+            className={
+              i === position ? 'visible top' : i === lastPosition ? 'visible' : ''
+            }
+          />
+        );
+      })}
+      ;
+    </div>
+  );
 }
+
+export default SlideShow;
