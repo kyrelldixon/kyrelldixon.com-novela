@@ -1,14 +1,9 @@
 {
-  "name": "gatsby-starter-eventually",
+  "name": "kyrelldixon.com",
   "version": "0.0.1",
-  "description": "Gatsby.js V2 starter template based on Eventually by HTML5 UP",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anubhavsrivastava/gatsby-starter-eventually.git"
-  },
+  "description": "The coming soon page for kyrelldixon.com",
   "author": {
-    "name": "Anubhav Srivastava",
-    "email": "anubhav.srivastava00@gmail.com"
+    "name": "Kyrell Dixon"
   },
   "dependencies": {
     "gatsby": "^2.4.3",
@@ -40,9 +35,5 @@
     "gatsby-starter",
     "gatsby-starter-eventually"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/anubhavsrivastava/gatsby-starter-eventually/issues"
-  },
-  "homepage": "https://github.com/anubhavsrivastava/gatsby-starter-eventually#readme"
+  "license": "MIT"
 }
