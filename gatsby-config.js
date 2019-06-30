@@ -19,6 +19,12 @@ module.exports = {
         icon: config.manifestIcon, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: 'gatsby-plugin-mailchimp',
+      options: {
+        endpoint: 'https://gmail.us3.list-manage.com/subscribe/post?u=2d60e20754af6d5ea8e855f91&amp;id=90e1334ab6',
+      },
+    },
     'gatsby-plugin-sass',
     'gatsby-plugin-offline',
   ],
