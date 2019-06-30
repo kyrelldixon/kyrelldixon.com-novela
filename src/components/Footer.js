@@ -8,9 +8,9 @@ const Footer = () => {
         {config.socialLinks.map(social => {
           const { icon, name, url } = social;
           return (
-            <li>
-              <a href={url} class={`icon ${icon}`}>
-                <span class="label">{name}</span>
+            <li key={icon}>
+              <a href={url} className={`icon ${icon}`}>
+                <span className="label">{name}</span>
               </a>
             </li>
           );
