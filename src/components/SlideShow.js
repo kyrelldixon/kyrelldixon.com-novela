@@ -5,7 +5,6 @@ const SlideShow = ({ settings }) => {
   const [lastPosition, setLastPosition] = useState(0);
 
   const rotateSlide = () => {
-    console.log('function called')
     setInterval(() => {
       setLastPosition(position);
       setPosition((pos) => pos + 1);
