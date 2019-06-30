@@ -1,32 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { useStaticQuery, graphql } from 'gatsby';
+import { useSiteMetadata } from '../hooks';
 
 import '../assets/sass/main.scss';
 
 const Layout = ({ children }) => {
   const [isPreloaded, setIsPreloaded] = useState(true);
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
+  const { title } = useSiteMetadata();
 
   useEffect(() => {
     setTimeout(() => {
       setIsPreloaded(false);
     }, 100);
+
   }, []);
     
   return (
     <>
       <Helmet
-        title={data.site.siteMetadata.title}
+        title={title}
         meta={[
           { name: 'description', content: 'Coming Soon' },
           { name: 'keywords', content: 'site, web' },
