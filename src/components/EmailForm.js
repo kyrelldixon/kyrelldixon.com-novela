@@ -42,6 +42,7 @@ const EmailForm = () => {
         type="text"
         name="name"
         id="name"
+        aria-label="Name"
         placeholder="Name"
         onChange={handleChange}
         value={values.name}
@@ -51,6 +52,7 @@ const EmailForm = () => {
         type="email"
         name="email"
         id="email"
+        aria-label="Email"
         placeholder="Enter email for updates"
         onChange={handleChange}
         value={values.email}
