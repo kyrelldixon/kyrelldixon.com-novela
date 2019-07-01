@@ -9,9 +9,7 @@ const EmailForm = () => {
 
   async function handleSuccess() {
     const result = await addToMailchimp(values.email, { NAME: values.name });
-    setMailchimpResult(res => {
-      return {...result, msg: fixMailchimpMessage(result.msg)};
-    });
+    setMailchimpResult({...result, msg: fixMailchimpMessage(result.msg)});
     setIsDisabled(true);
 
     setTimeout(() => {
@@ -35,7 +33,6 @@ const EmailForm = () => {
     if (msg.includes('subscribed')) {
       return `${values.email} is already subscribed.`
     }
-
     return msg;
   }
 
