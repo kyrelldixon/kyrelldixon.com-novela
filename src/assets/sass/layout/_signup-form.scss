@@ -24,10 +24,10 @@
 			margin: 0 0 0 0;
 		}
 
-		@include breakpoint('<=xsmall') {
+		@include breakpoint('<=small') {
 			@include vendor('flex-direction', 'column');
 
-			input[type="type"],
+			input[type="text"],
 			input[type="password"],
 			input[type="email"] {
 				width: 100%;
