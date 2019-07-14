@@ -1,0 +1,55 @@
+---
+title: Git Life Hacks—The Hidden Features of Git You Never Knew Existed
+slug: git-life-hacks—the-hidden-features-of-git-you-never-knew-existed
+category: development
+description: Here's a series of Git features that have the potential to completely change your workflow for the better.
+date: "2019-01-10T23:46:37.121Z"
+related:
+  - effortless-animation-with-react-16-3-and-popmotion-pose
+  - how-to-build-complicated-grids-using-css-grid
+---
+
+Today, in an effort to more effectively organize the major checkpoints of a project, I stumbled across a very useful feature that I haven’t heard about in all the years I’ve used Git. This led  me to the realization that there is much more to Git than to `add` and `commit` (bars). The purpose of this post is to keep track of a few game-changing commands I’ve learned about, along with the new way I learned to organize my Git repos.
+
+## A Quick Way to Trash all the Useless Changes
+
+Sometimes when working with Git, you just want to experiment on a new feature. Usually to do this you would make a new branch using `git branch <branch-name>` followed by `git checkout <branch-name>` or, more succinctly, `git checkout -b <branch-name>` and then start a reckless pursuit of code.
+
+If you’re like me though, sometimes you get too caught up in developing a feature that you forget about branching entirely. Sometimes it works out and you can just `add` and `commit` your codebase, but other times your code gets so out of wack that you really just want to throw it all away. The problem arises when you’ve modified the existing code so much it’s almost unrecognizable. What do you do at that point?
+
+Well the easiest thing to do, and the first Git life-hack is to run `git checkout .`. This command will bring your repo back to the state it was in all the way back to the last `commit`. If you’ve been smart about things, then you’ve followed the golden rule of source control to [commit early, commit often](https://blog.codinghorror.com/check-in-early-check-in-often/), but if not, that’s where this second life hack comes in.
+
+## Patch Up Shoddy Commit Work
+
+When I discovered this second life hack, it completely changed how I viewed `git add`.
+
+When I first started to learn about Git, the `git add` command seemed like an unnecessary extra step. For a while I avoided using it altogether when I found out you could just use `git commit -am "<commit message>"` to combine  `git add .` (this one adds all the files you’ve modified)  and `git commit -m` into one easy step.
+
+All was going well until I started to actually work on more complex code bases with multiple team members. I couldn’t get away with just running `git commit` with some vague message like:
+
+> added a bunch of stuff  
+> —My Less Experienced Self  
+
+My commit messages and the code that I was committing needed to match up. Since I wasn’t careful what changes I made while coding, sometimes I would add a ton of new features and it wouldn’t be clear what my commit message should be. So after a journey through the most glorious gift to developers a.k.a Stack Overflow, some Git documentation, and probably a few Medium posts, I came across the glory of `git add -p`.
+
+This command has so much to it that is outside of the scope of this post, but I’ll do my best to summarize. In a nutshell, `git add -p` or `git add --patch` allows you to selectively add parts of a file for a commit. What this means is if you have a file where you’ve made a ton of changes and it doesn’t make sense to add them all to the same commit message, you can cherry-pick code blocks (and even specific lines for more advanced users) to add for a single commit.
+
+I know this explanation doesn’t do it justice, but this [Youtube video by John Kary](https://www.youtube.com/watch?v=Wl0NfWYrvlY&t=352s) does a pretty damn good job.
+
+In short, this life-hack may not makes sense to many now, but write it down and keep it someplace safe. If you aren’t as hyped as I was, at some point in your career, you will be. (Or I could just be a geek. It could honestly go either way. 🤷🏽‍♂️)
+
+## Organize Your Commits Like a Pro
+
+So this final life hack is another one that won’t be relevant until it is. I stumbled across it today as I was looking for a way to group commits into certain versions or checkpoints. My goal was to make it easy for viewers of any of my video or blog content to follow along through the major progress points of a code base. At first I thought about using different branches for each major change, but it would mean a ton of code duplication which goes against all my coder reflexes to keep my code [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself). So that led to me learning about `git tag`.
+
+Essentially `git tag` allows you to group a sequence of commits with a name. A major use case of this is if you want to version a codebase so users can see the source code for each version. In my case it would allow me to give helpful names to each group of commits like a timestamp to show the state of a repo at a specific point in a video, or a header to the specific part of a blog post. This is something I have yet to implement, but I’ll update this post once I have an example repo to show a use case of `git tag`.
+
+If anyone is using this already, I’d love to see an example of how it’s working for you.
+
+## To Sum it Up…
+
+One thing I’ve learned throughout my career is that the best developers have an intimate understanding of the tools they work with. They dive deep into the documentation and take the time to truly find the hidden gems of tools they use on a regular basis like Git. Hopefully this has opened your eyes to some of the value you gain when you start to take that journey for yourself.
+
+Best,
+
+—Kai

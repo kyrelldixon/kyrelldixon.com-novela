@@ -1,0 +1,408 @@
+---
+title: "React From Scratch: React 16.7 + Webpack 4 + Babel 7 Tutorial"
+slug: react-from-scratch-react-16-7-webpack-4-babel-7-tutorial
+category: javascript
+description: Branch out from `create-react-app` and learn how to build your own custom React configuration with the most up to date versions of React, Webpack, and Babel.
+date: "2019-02-04T23:46:37.121Z"
+---
+
+Facebook made it pretty easy to get started making a project in React with [create-react-app](https://github.com/facebook/create-react-app). In fact they explicitly say:
+
+> You don’t need to install or configure tools like Webpack or Babel. They are preconfigured and hidden so that you can focus on the code.
+
+But what if you **want** to learn how to configure Webpack and Babel? This tutorial aims to demistify Webpack 4 and Babel 7 to give you the flexibility to configure these tools exactly how you want. We'll go step-by-step from creating the initial **index.js** to having a complete working setup for React.
+
+**Table of Contents**
+
+- [Basic Webpack Setup](#Basic-Webpack-Setup)
+  - [Create a Basic Project Structure](#Create-a-Basic-Project-Structure)
+  - [Bringing in Webpack](#Bringing-in-Webpack)
+  - [Basic Webpack Config Setup](#Basic-Webpack-Config-Setup)
+- [React, Babel, and Webpack Setup](#React-Babel-and-Webpack-Setup)
+  - [Setup Basic Babel Config](#Setup-Basic-Babel-Config)
+  - [Setup Babel for React](#Setup-Babel-for-React)
+  - [Creating a Simple React App](#Creating-a-Simple-React-App)
+- [Adding `html-webpack-plugin` for Script Injection](#Adding-html-webpack-plugin-for-Script-Injection)
+- [Enabling Hot Module Reloading](#Enabling-Hot-Module-Reloading)
+- [Conclusion](#Conclusion)
+
+## Basic Webpack Setup
+
+To get started, create the project folder and initialize the project.
+
+```bash
+mkdir react-from-scratch; cd $_
+yarn init # or npm init -y
+touch README.md
+echo "# React From Scratch" >> README.md
+```
+
+After that initial setup, you want to have a **package.json** that looks pretty similar to:
+
+```json
+{
+  "name": "react-from-scratch",
+  "version": "1.0.0",
+  "author": "Kyrell Dixon <github@kaicodes.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "index.js"
+}
+```
+
+### Create a Basic Project Structure
+
+Here we're putting the **index.js** inside the **src** folder since that's where Webpack will initially be looking for it. First, create the folder and **index.js** file with:
+
+```bash
+mkdir src
+touch src/index.js
+```
+
+**index.js**
+
+```javascript
+console.log("The index file is working");
+```
+
+### Bringing in Webpack
+
+Getting Webpack setup is as straightforward as looking through the docs. The Webpack [getting started](https://webpack.js.org/guides/getting-started/) page shows you the exact what modules you need to install. But to make it clear it's as simple as:
+
+```bash
+yarn add -D webpack webpack-cli # or npm i --save-dev webpack
+```
+
+After adding Webpack to the `devDependencies` section, there are a couple more setup steps. First, add a `scripts` object to the **package.json** file.
+
+```javascript
+"scripts": {
+  "build": "webpack"
+}
+```
+
+We also want to do some clean up and remove the `main: index.js` field in the **package.json** file. Your final output should look like:
+
+```javascript
+{
+  "name": "react-from-scratch",
+  "version": "1.0.0",
+  "author": "Kyrell Dixon <github@kaicodes.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  }
+}
+```
+
+### Basic Webpack Config Setup
+
+If you're working extensively with Webpack, typically you'll use a **webpack.config.js** file to manage your configuration details. To get started, create a new config file using:
+
+```bash
+touch webpack.config.js
+```
+
+From there, add some basic config details:
+
+**webpack.config.js**
+
+```javascript
+var path = require('path');
+
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  }
+};
+```
+
+For this config file, there are a few basic pieces to understand:
+
+* The *mode* determines what Webpack will optimize for. It defaults to `production`, but it can also be `development` or `none`
+* The *entry* point is the filepath (or paths) that Webpack starts bundling from
+* *output* is exactly what it sounds like. Here it is an object containing a filepath for where the final bundle will end up, and also the filename for the actual bundle.
+
+To test it out, run `yarn build` or `npm run build` to build your final bundle.
+
+## React, Babel, and Webpack Setup
+
+In this section, we'll create a simple React application and configure Webpack and Babel until we get it to build.
+
+### Setup Basic Babel Config
+
+Babel is a library that gives developers access to new JavaScript features that browsers may not support. It does this by transpiling later versions of JavaScript (ES6-7+) to CommonJS, a version of JavaScript that almost all browsers have supported for years.
+
+To get started, add a few libraries:
+
+```bash
+yarn add -D babel-loader @babel/core @babel/preset-env
+```
+
+* `babel-loader` is what Webpack uses to transpile JavaScript at build-time
+* `@babel/core` is the Babel 7 library that does most of the compilation heavy-lifting
+* `@babel/preset-env` is a preset that determines the appropriate transforms to apply
+
+From there a **.babelrc** file can be used to handle the Babel configurations. Create the file using:
+
+```bash
+touch .babelrc
+```
+
+This is where `@babel/preset-env` is included:
+
+**.babelrc**
+
+```javascript
+{
+  "presets": ["@babel/preset-env"]
+}
+```
+
+We also need to update **webpack.config.js** to use `babel-loader`
+
+```javascript
+module: {
+ rules: [
+   {
+     test: /\.(jsx?)$/,
+     exclude: /node_modules/,
+     use: {
+       loader: "babel-loader"
+     }
+   }
+ ]
+}
+```
+
+### Setup Babel for React
+
+We're almost ready to start building with React! First we'll have to install the React libraries `react` and `react-dom`. Then we can add in `@babel/preset-react` to make sure React can transpile the way it needs to.
+
+```bash
+yarn add react react-dom # or npm i react react-dom
+yarn add -D @babel/preset-react # or npm i --save-dev @babel/preset-react
+```
+
+Add the `@babel/preset-react` preset to the **.babelrc** file
+
+**.babelrc**
+
+```javascript
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+```
+
+### Creating a Simple React App
+
+Now that all the setup necessary to get a React project up and running has been taken care of, we can go ahead and add the rest of the files for a simple project:
+
+```bash
+mkdir public
+touch src/App.js public/index.html
+```
+
+I'm adding **index.html** to the **public** folder since that is a common convention that tells other developers this folder won't be modified by Webpack. Inside of the file I added some basic HTML5 boilerplate.
+
+**index.html**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>React from Scratch</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="../dist/main.bundle.js"></script>
+</body>
+</html>
+```
+
+Inside the body is a `<div id="root"></div>` that React will use to mount the file. I also added a hardcoded link to `../dist/main.bundle.js` so that the actual JavaScript is included when we open **index.html**.
+
+**App.js**
+
+```jsx
+import React from 'react';
+
+const App = () => (
+  <div>Inside the App component</div>
+);
+
+export default App;
+```
+
+**index.js**
+
+```jsx
+import React from 'react';
+import { render } from 'react-dom';
+import App from './App';
+
+render(
+  <App />,
+  document.getElementById('root')
+);
+```
+
+That's it! Run `yarn build` or `npm run build` to make sure you're not getting any errors. If everything is working fine, open **index.html** in your browser and you should see something like:
+
+## Adding `html-webpack-plugin` for Script Injection
+
+You may have realized that hardcoding a script tag into the app isn't the best way to connect it to the **index.html** file. If we change the name or the path of the compiled bundle from the build step, or if you decide to add in more build files, you will constantly have to update the script tag. To solve this issue, `html-webpack-plugin` dynamically injects output bundle into **index.html**. It also has a ton of other cool features you should check out in the [docs](https://github.com/jantimon/html-webpack-plugin).
+
+To install the library use:
+
+```bash
+yarn add --D html-webpack-plugin # or npm i --save-dev html-webpack-plugin
+```
+
+The [Github page](https://github.com/jantimon/html-webpack-plugin) for the library has an example that I took and modified so that we can inject our bundle into an existing **index.html** file.
+
+```json
+plugins: [
+  new HtmlWebpackPlugin({
+    title: 'Custom template',
+    // Load a custom template (lodash by default)
+    template: 'index.html'
+  })
+]
+```
+
+**webpack.config.js**
+
+```javascript
+var path = require('path');
+
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'React from Scratch',
+      // Load a custom template (lodash by default)
+      template: 'public/index.html'
+    })
+  ],
+  module: {
+    rules: [{
+      test: /\.(jsx?)$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader"
+      }
+    }]
+  }
+};
+
+```
+
+**index.html**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
+```
+
+## Enabling Hot Module Reloading
+
+Currently, in order to see any changes you add to your JavaScript reflected in the **index.html**, you have to rebuild the app after every change. This leads to a slower development cycles which make you less productive. Hot module reloading was created to solve this issue. Basically, it handles updating your html file whenever there is a change so that you don't have to continually rebuild to see changes reflected.
+
+There are several ways to enable hot module reloading with Webpack, but one of the most common ways is through the use of `webpack-dev-server`. This library is packed with tons of features like hot module reloading, more descriptive error messages, and a network accessible server that allows you to test your apps on any device on the same network.
+
+To get it set up, first install the library using:
+
+```bash
+yarn add -D webpack-dev-server
+```
+
+We can then add a start script to the package.json so we can run `yarn start` or `npm run start` to get everything up and running with:
+
+```json
+"start": "webpack-dev-server --open"
+```
+
+The `--open` flag automatically opens the page in your browser. From here you can run `yarn start` or `npm run start` to start the server based on the default configuration. If you want to modify it you can add
+the `devServer` object to your **webpack.config.js**. This will allow you to fine tune the server to behave in a way that's best for you. An example object is:
+
+```json
+devServer: {
+  contentBase: path.join(__dirname, 'dist'),
+  compress: true,
+  port: 3000
+}
+```
+
+My final config looks like:
+
+**webpack.config.js**
+
+```javascript
+var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 3000
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'React from Scratch',
+      // Load a custom template (lodash by default)
+      template: 'public/index.html'
+    })
+  ],
+  module: {
+    rules: [{
+      test: /\.(jsx?)$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader"
+      }
+    }]
+  }
+};
+```
+
+## Conclusion
+
+This tutorial was meant to introduce you to some of what's possible to get going in webpack. There is a ton of opportunity to extend the base configuration to include styling and more custom optimization. I'd encourage you to play around with some of the links mentioned earlier in the documentation to see just how flexible webpack can be.
+
+Best,
+
+--Kai
