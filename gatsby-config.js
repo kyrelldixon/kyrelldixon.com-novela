@@ -3,9 +3,9 @@ module.exports = {
     title: `Kyrell Dixon`,
     name: `Kyrell Dixon`,
     siteUrl: `https://www.kyrelldixon.com`,
-    description: `This is my description that will be used in the meta tags and important for search results`,
+    description: `Software, traveling, and doing both at the same time.`,
     hero: {
-      heading: `Welcome to Novela, the simplest way to start publishing with Gatsby.`,
+      heading: `Software, traveling, and doing both at the same time.`,
       maxWidth: 652,
     },
     social: [{
