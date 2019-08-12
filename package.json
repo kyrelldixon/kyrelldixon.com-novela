@@ -1,9 +1,21 @@
 {
   "dependencies": {
-    "@narative/gatsby-theme-novela": "^0.1.0",
+    "@narative/gatsby-theme-novela": "^0.2.1",
     "gatsby": "^2.13.57",
     "gatsby-plugin-manifest": "^2.2.5",
+    "patch-package": "^6.1.2",
+    "postinstall-postinstall": "^2.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
+  },
+  "scripts": {
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "clean": "gatsby clean",
+    "eject": "gatsby-theme eject",
+    "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "gatsby-theme": "^0.0.6"
   }
 }

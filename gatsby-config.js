@@ -3,9 +3,9 @@ module.exports = {
     title: `Kyrell Dixon`,
     name: `Kyrell Dixon`,
     siteUrl: `https://www.kyrelldixon.com`,
-    description: `Software, traveling, and doing both at the same time.`,
+    description: `My insights into tech, traveling, and business while learning in public.`,
     hero: {
-      heading: `Software, traveling, and doing both at the same time.`,
+      heading: `My insights into tech, traveling, and business while learning in public.`,
       maxWidth: 652,
     },
     social: [{
