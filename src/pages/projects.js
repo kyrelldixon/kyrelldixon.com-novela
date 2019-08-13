@@ -3,11 +3,13 @@ import Layout from "@narative/gatsby-theme-novela/src/components/Layout"
 import Section from "@narative/gatsby-theme-novela/src/components/Section";
 import SEO from "@narative/gatsby-theme-novela/src/components/SEO";
 
+import ProjectsHero from "../components/Projects.Hero"
+
 const Projects = () => {
   return (
     <Layout>
       <SEO pathname="/projects" />
-      <h1>This is the project page</h1>
+      <ProjectsHero />
       <Section narrow>
         <div>This is a project</div>
       </Section>
