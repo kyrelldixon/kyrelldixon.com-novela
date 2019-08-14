@@ -6,7 +6,7 @@ import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 const ProjectsHero = () => (
   <Section relative id="Projects__Hero">
     <HeadingContainer>
-      <HeroHeading>Check out some of the projects I'm working on</HeroHeading>
+      <HeroHeading>Check out some of the projects I'm working on.</HeroHeading>
     </HeadingContainer>
   </Section>
 )
