@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import Image from "@narative/gatsby-theme-novela/src/components/Image";
 import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 
+// TODO: Update to use Gatsby Image
 import twitter from "../assets/twitter-clone-desktop.jpg";
 
 const ProjectsList = () => {
@@ -20,6 +21,7 @@ const ExternalLink = ({ to, children }) => (
 )
 
 const Project = () => (
+  // TODO: Extract project info into props
   <ProjectContainer>
     <ProjectName>Twitter Clone</ProjectName>
     <ProjectDescription>A full stack Twitter clone with an Elixir REST API handling the back end and React
@@ -42,9 +44,12 @@ const Project = () => (
 )
 
 const StyledExternalLink = styled.a`
+  color: #fff;
+  
   &:visited {
     color: inherit;
   }
+
   &:hover {
     color: ${p => p.theme.colors.accent};
   }
@@ -140,6 +145,14 @@ const ProjectImage = styled(Image)`
     display: block;
     align-self: center;
     margin-bottom: 30px;
+  `}
+
+  ${mediaqueries.tablet`
+    max-width: 300px;
+  `}
+
+  ${mediaqueries.phone`
+    max-width: 250px;
   `}
 `;
 
