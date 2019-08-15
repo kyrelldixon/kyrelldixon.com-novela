@@ -5,7 +5,9 @@ This is my personal site built with [@narrative/gatsby-theme-novela](https://git
 TODO:
 
 - [x] Add blog page
-- [ ] Add projects page
+- [x] Add projects page
+- [ ] Add navigation
+- [ ] Add resume link
 - [ ] Add contact page
 - [ ] Add notes page (random thoughts with no date or order)
 - [ ] Update logo
