@@ -1,14 +1,14 @@
 ---
-title: "How to Create a Node.js Server With Express"
+title: "How to Setup an Express.js Server in Node.js"
 author: Kyrell Dixon
-slug: react-from-scratch-react-16-7-webpack-4-babel-7-tutorial
+slug: how-to-setup-an-express-server-in-nodejs
 category: javascript
-excerpt: This is a completely beginner friendly tutorial on how to create a web server with Node.js using the Express framework.
+excerpt: This is a completely beginner friendly tutorial on how to setup a web server with Node.js using the Express framework.
 hero: ./images/hero.jpg
 date: 2019-08-18
 ---
 
-This is a completely beginner friendly tutorial on how to create a web server with Node.js using the Express framework.
+This tutorial aims to show you how to use the Express framework and Node.js to get a simple server up and running completely from scratch. It goes into depth on different ways to test your server without needing to write a front-end.
 
 ## Understanding the Terms
 
@@ -68,7 +68,7 @@ The last thing we need to get set up for now is adding in the Express framework.
 npm i express
 ```
 
-Here `npm i` is short for `npm install` because the less letters you type, the less of a risk for carpal tunnel (and because the best developers are lazy EMOJI).
+Here `npm i` is short for `npm install` because the less letters you type, the less of a risk for carpal tunnel (and because the best developers are lazy).
 
 Running this command will add a few new files:
 
@@ -79,7 +79,7 @@ Running this command will add a few new files:
 └── package.json
 ```
 
-**Pro-tip**: To get this to display I used a command called `tree`. [This](https://askubuntu.com/questions/431251/how-to-print-the-directory-tree-in-terminal) link will help you get it for MacOS and Ubuntu.
+**Pro-tip**: To get this to display I used a command called `tree`. [This](https://askubuntu.com/questions/431251/how-to-print-the-directory-tree-in-terminal) link will help you install it on MacOS and Ubuntu.
 
 The `node_modules` folder is where the Express framework code lives as well as all its dependencies. If you're using git, you want to make sure that you **never** commit this folder unless absolutely necessary because it is *massive*.
 
@@ -87,7 +87,7 @@ The `node_modules` folder is where the Express framework code lives as well as a
 
 The `package-lock.json` file is automatically generated primarily as a way of keeping track of your project dependcies, but it serves multiple purposes. For more information, check out the npm documentation's [description of this file](https://docs.npmjs.com/files/package-lock.json).
 
-With that, we have all the initial setup done. for the project. Now we can get into creating the server
+With that, we have all the initial setup done. for the project. Now we can get into creating the server.
 
 ## Creating the Initial Server
 
@@ -141,7 +141,7 @@ If all else fails, reach out and I or someone else in the community will gladly 
 
 Once everything is working, you are almost ready to create some API endpoints! Well, *almost* ready. First we want to do a quick refactoring of the port.
 
-## Refactoring Port
+## A Quick Refactor of the `PORT`
 
 As a quick refactoring, we're going to move the port to it's own variable like so:
 
@@ -168,19 +168,19 @@ With that out of the way, we can get into creating the API endpoints.
 
 The first endpoint we'll create will handle a GET request.
 
-```diff
+```javascript
 const express = require("express");
 
 const PORT = 1234;
 const app = express();
 
-+app.get("/hello", (req, res) => {
-+  res.send("Hello world");
-+});
-+
- app.listen(PORT, () => {
-   console.log(`Server is listening on port: ${PORT}`);
- });
+app.get("/hello", (req, res) => {
+  res.send("Hello world");
+});
+
+app.listen(PORT, () => {
+ console.log(`Server is listening on port: ${PORT}`);
+});
 ```
 
 Let's break this down.
@@ -195,7 +195,7 @@ In this case we are using `res.send` to respond with the string `"Hello world"`.
 
 So after getting the server up and running how do you test it out? I'm going to cover three ways to test out the api endpoint without having to write a line of code.
 
-## Testing the API endpoint
+## Three ways to test API endpoints
 
 To test out the `"/hello"` endpoint, we want to send a GET request to the full server url at `localhost:1234/hello`.
 
@@ -203,14 +203,129 @@ We are using `localhost` since we are running the server locally and `:1234` sin
 
 The first way to test this out will be in the browser!
 
-### In the browser
+### Testing a GET endpoint from the browser
 
-Pop open Chrome, Firefox, Safari, or whatever browser you're comfortable with.
-
-Just please, **PLEASE** don't use Internet Explorer. Microsoft, it's creator, [doesn't even want you to](https://www.theverge.com/2019/2/8/18216767/microsoft-internet-explorer-warning-compatibility-solution).
+Pop open Chrome, Firefox, Safari, or whatever browser you're comfortable with. Just please, **PLEASE** don't use Internet Explorer. Microsoft, it's creator, [doesn't even want you to](https://www.theverge.com/2019/2/8/18216767/microsoft-internet-explorer-warning-compatibility-solution).
 
 If you're getting an error, make sure to restart your server with `ctrl+c` followed by a `node index.js`. (I'll show you a way to avoid errors from forgetting to restart your server a little later.)
 
 Your browser should look like:
 
 ![Hello world endpoint in browser](./images/hello-endpoint.jpg)
+
+Why does this work?
+
+Whenever you go to the address bar in your browser, it is actually doing a GET request to whatever URL you give it. So every time you go to google.com for example, your browser is doing a GET and the Google server is sending you the HTML, CSS, and JavaScript needed to display the Google search bar.
+
+The GET route for the `"hello"` endpoint is currently sending down the string `"Hello world"`, but we could have it send pretty much any document containing text--which is all a JSON or HTML file really is.
+
+A browser is great for quickly testing our GET endpoints, but if you need to test any other type of request like a POST or DELETE, you will need a different method entirely. This next method will show you how to test your endpoints entirely from the command line using cURL.
+
+### Test any API endpoints from the command line with cURL
+
+Sometimes you want to quickly test your API endpoint without having to leave your code editor. If you are working with Visual Studio Code, then you can test your API endpoints without needing to open up another app. (If not, you can open up the terminal and still take advantage of this method.)
+
+**Pro-tip:** Use Visual Studio Code. It's the best.
+
+To test your endpoints with cURL, go to your command line and type:
+
+```bash
+curl localhost:1234/hello
+```
+
+You should get the same `"Hello world"` response that you got from the browser.
+
+With cURL you can also do other types of requests like POST, PUT, and DELETE, modify headers, use cookies, and pretty much anything else you need to test out an API. It's a very powerful tool to learn, but if you're not a fan of working with a command line it can get tedious.
+
+This is where the final solution comes in.
+
+### Testing your API endpoints with Postman
+
+![Postman front-page](./images/postman.jpg)
+
+[Postman](https://www.getpostman.com/) provides a nice GUI (pronounced "gooey"), or Graphical User Interface, to easily make requests to your endpoints. I personally use this most out of the techniques mentioned because it just makes APIs so easy to test. It is especially useful as your APIs grow in complexity and you have a wide variety of endpoints to test.
+
+In this case, all you need to do is pass in the url as shown in the image above and hit send. The `"Hello world` response shows up like normal, but you can also see the headers that get sent back with the response.
+
+![Postman headers](./images/postman-headers.jpg)
+
+You can think of headers as simply data about a request or response. In the image you can see an `X-Powered-By: Express` header that tells you Express is responsible for sending this response.
+
+Another notable header is the `Content-Type` header that lets the client know how to interpret the body of the response. Here it is `text/html; charset=utf-8` since that is the default `Content-Type` when using `res.send` for the response.
+
+There are several other default headers that Postman parses out and makes it easy to see, but in each of the techniques, the exact same headers and response body were sent. This just shows that using different tools have various pros and cons, and sometimes you can learn just by trying different ways to accomplish the same task.
+
+Now that testing is out of the way, I want to show an optional way to prevent a common mistake you will inevitably run into in your career.
+
+## Bonus: Reduce development errors with `nodemon`
+
+Anytime you make changes to your server you have to stop and restart the server to be able to test those changes. Forgetting to restart the server can lead to hours of frustration and doubt because you think your code isn't working when in reality the server just hasn't loaded the changes.
+
+If you haven't felt this struggle you are one of the lucky few. This tip will make it so you never encounter it. The solution is to install an npm package called `nodemon`.
+
+With `nodemon`, you will never have to manually restart your server. It runs in the background and watches all your files for changes. When it detects one, it will automatically restart the server so you can focus on writing code.
+
+To get started you will need to install it:
+
+```bash
+npm i --save-dev nodemon
+```
+
+Here you use the `--save-dev` or alternatively the `-D` flag to add nodemon to you `devDependencies` in the `package.json` file.
+
+Your `package.json` file should now contain an object similar to this:
+
+```json
+{
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
+```
+
+We added it to the `devDependicies` since this is just a convenient way to run the server to make development easier and isn't required to have a working application.
+
+To use `nodemon` to run the server, first you want to add a `"start"` script to the `package.json` in the `"scripts"` object:
+
+```json
+"scripts": {
+  "start": "nodemon index.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+```
+
+Then to run the server it you can use:
+
+```bash
+npm start
+```
+
+This should create a display that looks like:
+
+![Nodemon output](./images/nodemon.jpg)
+
+Another way to work with `nodemon` is to do a global install that will allow you to run it from the command line for *any* project without needing to install it as a `devDependency`.
+
+To do that run:
+
+```bash
+npm i -g nodemon
+```
+
+This installs the package system-wide instead of just for the specific project. This allows you to simply run `nodemon index.js` from the command line without having to set up a script in the `package.json` file.
+
+## Finishing up
+
+This tutorial has covered the inital set up of an Express server, creating a GET endpoint, and testing the endpoint with `cURL`, a browser, and Postman.
+
+You should now have everything you need to explore and test other types of endpoints. With that, I'll leave you with a few practical exercises for those that want to go beyond what this tutorial has shown.
+
+### Exercises
+
+- Push your code to GitHub
+- Add POST, PUT, and DELETE endpoints to the server
+- Read through the Express.js [documentation](https://expressjs.com/en/api.html)
+- Create a simple form and connect it to the server
+- Deploy the server on [DigitalOcean](https://www.digitalocean.com/) or a serverless cloud provider
+
+If you have any questions or feedback, reach out to me on [Twitter](https://www.twitter.com/kyrelldixon)!
