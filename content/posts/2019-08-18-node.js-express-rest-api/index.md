@@ -23,6 +23,26 @@ To prevent that, I am going to briefly define a few important terms and concepts
 
 As you go through this tutorial, you will see more practical examples of these terms.
 
+## Requirements
+
+For this tutorial you will need a Unix shell to run the bash commands. On Mac and Linux you can use Terminal to run the commands with no problems. On Windows, you will want to use either [Git Bash](https://gitforwindows.org/), [Linux for Windows](https://itsfoss.com/install-bash-on-windows/), [Cmder](https://cmder.net/), or some other Unix shell.
+
+You will also need to have [Node](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) installed.
+
+To check if you have Node installed, open your terminal and run:
+
+```bash
+node -v
+```
+
+To check if you have npm installed, open your terminal and run:
+
+```bash
+npm -v
+```
+
+With that out of the way, you can set up the project!
+
 ## Set up your project
 
 To get started, create and change into a folder for your project.
