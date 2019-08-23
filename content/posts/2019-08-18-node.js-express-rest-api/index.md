@@ -105,7 +105,7 @@ The `node_modules` folder is where the Express framework code lives as well as a
 
 **Pro-tip:** Check out [`npkill`](https://medium.com/better-programming/npkill-the-easy-solution-to-deleting-node-modules-with-style-1c591126f7a5) if you want a way of easily removing node_modules from unused projects on your computer.
 
-The `package-lock.json` file is automatically generated primarily as a way of keeping track of your project dependcies, but it serves multiple purposes. For more information, check out the npm documentation's [description of this file](https://docs.npmjs.com/files/package-lock.json).
+The `package-lock.json` file is automatically generated primarily as a way of keeping track of your project dependencies, but it serves multiple purposes. For more information, check out the npm documentation's [description of this file](https://docs.npmjs.com/files/package-lock.json).
 
 With that, we have all the initial setup done. for the project. Now we can get into creating the server.
 
@@ -152,8 +152,6 @@ If you've followed every step until now, you should see a message in your termin
 ```bash
 Server is listening on port: 1234
 ```
-
-This message says the local
 
 If you don't, try to debug it! If you're getting some type of error message, try to decipher it yourself or just copy and paste it straight into Google.
 
