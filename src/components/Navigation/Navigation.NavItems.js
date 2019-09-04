@@ -10,19 +10,31 @@ const navLinks = [
 ];
 
 const NavItems = () => (
-  <NavList>
+  <DesktopNavList>
     {
-      navLinks.map(navLink => (
-        <NavItem>
-          <NavAnchor to={navLink.to}>{navLink.text}</NavAnchor>
+      navLinks.map(nav => (
+        <NavItem key={nav.to}>
+          <NavAnchor 
+            to={nav.to}
+            data-a11y="false"
+            getProps={({ isPartiallyCurrent }) => (
+              // eslint-disable-next-line
+              isPartiallyCurrent ? { ['data-active']: 'true' } : null
+            )}
+          >
+            {nav.text}
+          </NavAnchor>
         </NavItem>
       ))
     }
-  </NavList>
+  </DesktopNavList>
 );
 
-const NavList = styled.ul `
-  list-style: outside none none;
+const DesktopNavList = styled.ul `
+  list-style: none;
+  ${mediaqueries.tablet`
+    display: none;
+  `};
 `;
 
 const NavItem = styled.li `
@@ -53,13 +65,31 @@ const NavItem = styled.li `
 `;
 const NavAnchor = styled(Link)`
 	display: flex;
-	height: 40px;
-	align-items: center;
-	color: ${p => p.theme.colors.primary};
-	font-weight: 600;
-	font-size: 18px;
-	pointer-events: initial;
-	opacity: 1;
+  height: 40px;
+  align-items: center;
+  color: ${p => p.theme.colors.primary};
+  font-weight: 600;
+  font-size: 18px;
+  &:hover {
+    opacity: ${p => (p.disabled ? 0.15 : 0.6)};
+  }
+  &:focus {
+    outline: none;
+  }
+  &[data-a11y='true']:focus::after {
+    content: '';
+    position: absolute;
+    left: -25%;
+    top: 2%;
+    width: 150%;
+    height: 100%;
+    border: 2px solid ${p => p.theme.colors.purple};
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 5px;
+  }
+  ${mediaqueries.phablet`
+    display: none;
+  `};
 `;
 
 export default NavItems;
