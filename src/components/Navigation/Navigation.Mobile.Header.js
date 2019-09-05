@@ -78,9 +78,10 @@ const SocialIconsHeader = styled.div`
   opacity: ${p => (p.active ? 1 : 0)};
   transform: translateY(${p => (p.active ? 0 : -12)}px);
   transition: all 0.5s var(--ease-out-quad) 100ms;
-  @media screen and (max-height: 700px) {
+  ${mediaqueries.tablet`
+  
     margin-bottom: 40px;
-  }
+  `}
 `;
 
 const HorizontalRule = styled.hr`
@@ -91,9 +92,9 @@ const HorizontalRule = styled.hr`
   opacity: ${p => (p.active ? 1 : 0)};
   transform: scaleX(${p => (p.active ? 1 : 0.6)});
   transition: transform 0.5s var(--ease-out-quad), opacity 0.4s ease-out;
-  @media screen and (max-height: 700px) {
+  ${mediaqueries.tablet`
     margin: 0 40px 25px;
-  }
+  `}
 `;
 
 const MobileLinks = styled.div`
@@ -117,7 +118,7 @@ const StyledLink = styled(Link)`
   }
   padding: 15px;
   margin-bottom: 5px;
-  @media screen and (max-height: 700px) {
+  ${mediaqueries.tablet`
     margin-bottom: 0;
-  }
+  `}
 `;
