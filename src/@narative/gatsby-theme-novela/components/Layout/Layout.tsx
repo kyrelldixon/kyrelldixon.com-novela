@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ThemeProvider, useColorMode } from "theme-ui";
-import { Global } from "@emotion/core";
+import { Global, css } from "@emotion/core";
 import styled from "@emotion/styled";
 
 import NavigationFooter from "@components/Navigation/Navigation.Footer";
@@ -30,23 +30,32 @@ const navLinks = [
 function Layout({ children }: LayoutProps) {
   const [colorMode] = useColorMode();
   const [active, setActive] = useState<boolean>(false);
+  const [mobileNavOffset, setMobileNavOffset] = useState<number>(0);
 
-  function toggleNav() {
-    setActive(!active);
-  }
-
+  const MOBILE_NAV_DURATION = 500;
+  const MOBILE_NAV_OFFSET = 576;
+  const MOBILE_NAV_OFFSET_SHORT = 420;
+  
   let finalTheme = theme;
-
+  
   if (colorMode === "dark") {
     finalTheme = Object.assign({}, theme, { colors: colors.modes[colorMode] });
   }
-
+  
+  function toggleNav() {
+    setActive(!active);
+    setMobileNavOffset(MOBILE_NAV_OFFSET_SHORT);
+  }
   return (
     <ThemeProvider theme={finalTheme}>
       <ArticlesContextProvider>
-        <Container>
+        <NavigationMobile active={active} navLinks={navLinks} />
+        <Container
+          mobileNavOffset={mobileNavOffset}
+          mobileNavDuration={MOBILE_NAV_DURATION}
+          active={active}
+        >
           <Global styles={globalStyles} />
-          <NavigationMobile active={active} navLinks={navLinks} />
           <NavigationDesktop
             active={active}
             toggleNav={toggleNav}
@@ -67,4 +76,11 @@ const Container = styled.div`
   background: ${p => p.theme.colors.background};
   transition: ${p => p.theme.colorModeTransition};
   min-height: 100vh;
+
+  @media screen and (max-width: 700px) {
+    transform: ${p => p.active ? `translateY(${p.mobileNavOffset}px);` : 'none;'}
+    transition: transform ${p => p.mobileNavDuration + 60}ms cubic-bezier(0.52, 0.16, 0.24, 1);
+    width: 100vw;
+    touch-action: ${p => (p.active ? 'none' : 'initial')};
+  }
 `;

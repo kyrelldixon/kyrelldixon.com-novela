@@ -40,8 +40,8 @@ const NavigationMobile = ({ active, navigateOut, navLinks }) => {
             key={link.to}
             index={index}
             to={link.to}
-            // onClick={event => navigateOut(event, link.to)}
             getProps={({ isPartiallyCurrent }) =>
+              // eslint-disable-next-line
               isPartiallyCurrent ? { ['data-active']: 'true' } : null
             }
           >
@@ -68,10 +68,6 @@ const Frame = styled.nav`
   @media screen and (max-height: 700px) {
     padding: 40px 0;
   }
-  ${mediaqueries.desktop_up`
-    display: none;
-    visibility: hidden;
-  `}
 `;
 
 const SocialIconsHeader = styled.div`
