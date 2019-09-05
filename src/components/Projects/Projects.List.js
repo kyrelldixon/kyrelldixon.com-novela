@@ -4,7 +4,7 @@ import Image from "@narative/gatsby-theme-novela/src/components/Image";
 import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 
 // TODO: Update to use Gatsby Image
-import twitter from "../assets/twitter-clone-desktop.jpg";
+import twitter from "../../assets/twitter-clone-desktop.jpg";
 
 const ProjectsList = () => {
   return (
@@ -41,7 +41,9 @@ const Project = () => (
       <ExternalLink to="https://twitter-cloned.netlify.com">Visit Website</ExternalLink>
     </MainAction>
   </ProjectContainer>
-)
+);
+
+export default ProjectsList;
 
 const StyledExternalLink = styled.a`
   color: #fff;
@@ -155,5 +157,3 @@ const ProjectImage = styled(Image)`
     max-width: 250px;
   `}
 `;
-
-export default ProjectsList;

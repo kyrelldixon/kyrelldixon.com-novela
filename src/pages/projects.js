@@ -3,8 +3,8 @@ import Layout from "@narative/gatsby-theme-novela/src/components/Layout";
 import Section from "@narative/gatsby-theme-novela/src/components/Section";
 import SEO from "@narative/gatsby-theme-novela/src/components/SEO";
 
-import ProjectsHero from "../components/Projects.Hero";
-import ProjectsList from "../components/Projects.List";
+import ProjectsHero from "../components/Projects/Projects.Hero";
+import ProjectsList from "../components/Projects/Projects.List";
 
 const Projects = () => {
   return (

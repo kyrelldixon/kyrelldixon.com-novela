@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import Section from "@narative/gatsby-theme-novela/src/components/Section";
 import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 
-const ProjectsHero = () => (
+const Hero = () => (
   <Section relative id="Projects__Hero">
     <HeadingContainer>
       <HeroHeading>Check out some of the projects I'm working on.</HeroHeading>
@@ -38,4 +38,4 @@ const HeroHeading = styled.h1`
   `}
 `;
 
-export default ProjectsHero;
+export default Hero;
