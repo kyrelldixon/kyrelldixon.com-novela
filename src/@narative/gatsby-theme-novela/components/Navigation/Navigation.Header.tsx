@@ -66,6 +66,11 @@ function NavigationHeader({ active, toggleNav, navLinks }) {
             </button>
           ) : (
             <>
+              <Nav>
+                <NavItems navLinks={navLinks} />              
+              </Nav>
+              <SharePageButton />
+              <DarkModeToggle />          
               <MobileHamburger 
                 active={active}
                 onClick={toggleNav}
@@ -74,9 +79,6 @@ function NavigationHeader({ active, toggleNav, navLinks }) {
                 <LeftToggle active={active} />
                 <RightToggle />
               </MobileHamburger>
-              <Nav>
-                <NavItems navLinks={navLinks} />              
-              </Nav>
             </>
           )}
         </NavControls>
@@ -362,18 +364,15 @@ const Hidden = styled.span`
 `;
 
 const MobileHamburger = styled.button`
-  /* position: ${p => (p.fixed ? 'fixed' : 'absolute')}; */
-  position: default;
   z-index: 999;
   width: 30px;
   height: 30px;
+  margin-left: 30px;
   opacity: ${p => (p.active ? 0.5 : 1)};
   transition: transform 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
   &::before {
     content: '';
     position: absolute;
-    width: 200%;
-    height: 200%;
     left: -80%;
     top: -50%;
   }
