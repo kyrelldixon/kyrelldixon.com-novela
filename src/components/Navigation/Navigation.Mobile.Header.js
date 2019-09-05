@@ -65,7 +65,7 @@ const Frame = styled.nav`
   height: 100vh;
   background: ${p => (p.active ? '#1d2128' : '#08080b')};
   transition: background 0s ${p => (p.active ? '0' : '0.5s')};
-  @media screen and (max-height: 700px) {
+  @media screen and (max-height: 734px) {
     padding: 40px 0;
   }
 `;

@@ -110,7 +110,7 @@ const Container = styled.div`
     );
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 734px) {
     transform: ${p => p.active ? `translateY(${p.mobileNavOffset}px);` : 'none;'}
     transition: transform ${p => p.mobileNavDuration + 60}ms cubic-bezier(0.52, 0.16, 0.24, 1);
     width: 100vw;
