@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider, useColorMode } from "theme-ui";
 import { Global, css } from "@emotion/core";
 import styled from "@emotion/styled";
@@ -11,7 +11,7 @@ import ArticlesContextProvider from "@narative/gatsby-theme-novela/src/sections/
 import { globalStyles } from "@styles";
 import theme from "@narative/gatsby-theme-novela/src/gatsby-plugin-theme-ui";
 import colors from "@narative/gatsby-theme-novela/src/gatsby-plugin-theme-ui/colors";
-import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
+import { scrollable } from "../../../../utils";
 
 interface LayoutProps {
   children: React.ReactChild;
@@ -46,6 +46,11 @@ function Layout({ children }: LayoutProps) {
     setActive(!active);
     setMobileNavOffset(MOBILE_NAV_OFFSET_SHORT);
   }
+
+  useEffect(() => {
+    scrollable(active ? 'disable' : 'enable');
+  }, [active]);
+
   return (
     <ThemeProvider theme={finalTheme}>
       <ArticlesContextProvider>
