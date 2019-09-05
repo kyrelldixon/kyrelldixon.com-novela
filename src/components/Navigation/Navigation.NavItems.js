@@ -4,12 +4,7 @@ import { Link } from "gatsby";
 
 import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 
-const navLinks = [
-  { to: '/projects', text: 'Projects' },
-  { to: '/', text: 'Articles' },
-];
-
-const NavItems = () => (
+const NavItems = ({ navLinks }) => (
   <DesktopNavList>
     {
       navLinks.map(nav => (

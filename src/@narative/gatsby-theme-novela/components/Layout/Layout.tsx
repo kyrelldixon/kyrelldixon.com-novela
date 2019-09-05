@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ThemeProvider, useColorMode } from "theme-ui";
 import { Global } from "@emotion/core";
 import styled from "@emotion/styled";
@@ -17,6 +17,11 @@ interface LayoutProps {
   children: React.ReactChild;
 }
 
+const navLinks = [
+  { to: '/projects', text: 'Projects' },
+  { to: '/', text: 'Articles' },
+];
+
 /**
  * <Layout /> needs to wrap every page as it provides styles, navigation,
  * and the main structure of each page. Within Layout we have the <Container />
@@ -24,6 +29,12 @@ interface LayoutProps {
  */
 function Layout({ children }: LayoutProps) {
   const [colorMode] = useColorMode();
+  const [active, setActive] = useState<boolean>(false);
+
+  function toggleNav() {
+    setActive(!active);
+  }
+
   let finalTheme = theme;
 
   if (colorMode === "dark") {
@@ -35,8 +46,12 @@ function Layout({ children }: LayoutProps) {
       <ArticlesContextProvider>
         <Container>
           <Global styles={globalStyles} />
-          <NavigationMobile />
-          <NavigationDesktop />
+          <NavigationMobile active={active} navLinks={navLinks} />
+          <NavigationDesktop
+            active={active}
+            toggleNav={toggleNav}
+            navLinks={navLinks}
+          />
           {children}
           <NavigationFooter />
         </Container>
