@@ -77,6 +77,34 @@ const Container = styled.div`
   transition: ${p => p.theme.colorModeTransition};
   min-height: 100vh;
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: ${p => (p.low ? '10px' : '-20px')};
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: ${p => (p.theme.colors.background)};
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0px -20px 40px rgba(0, 0, 0, 0.2);
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: ${p => (p.low ? '11px' : '-21px')};
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: calc(100vw - 40px);
+    height: 1px;
+    background: radial-gradient(
+      174px at 50.14% 100.05%,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  }
+
   @media screen and (max-width: 700px) {
     transform: ${p => p.active ? `translateY(${p.mobileNavOffset}px);` : 'none;'}
     transition: transform ${p => p.mobileNavDuration + 60}ms cubic-bezier(0.52, 0.16, 0.24, 1);
