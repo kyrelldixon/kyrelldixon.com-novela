@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@narative/gatsby-theme-novela": "^0.2.1",
-    "gatsby": "^2.13.57",
+    "@narative/gatsby-theme-novela": "^0.6.2",
+    "gatsby": "^2.15.9",
     "gatsby-plugin-google-analytics": "^2.1.10",
     "gatsby-plugin-manifest": "^2.2.5",
     "patch-package": "^6.1.2",
@@ -13,10 +13,12 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "clean": "gatsby clean",
+    "stage": "gatsby build && gatsby serve",
     "eject": "gatsby-theme eject",
     "postinstall": "patch-package"
   },
   "devDependencies": {
     "gatsby-theme": "^0.0.6"
-  }
+  },
+  "license": "MIT"
 }
