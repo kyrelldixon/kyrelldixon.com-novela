@@ -22,7 +22,7 @@ const siteQuery = graphql `
   }
 `;
 
-const NavigationMobile = ({ active, navigateOut, navLinks }) => {
+const NavigationMobile = ({ active, navLinks }) => {
   const isActive = active ? active : undefined;
   const results = useStaticQuery(siteQuery);
   const { social } = results.allSite.edges[0].node.siteMetadata;
