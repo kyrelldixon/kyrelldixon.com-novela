@@ -12,7 +12,7 @@ const Home = () => {
         <h1>Hi! My name is Kyrell Dixon, but you can call me Kai.</h1>
         <h2>
           I'm a full stack developer. I develop software products, teach,
-          and travel. I also like to write about what I learn.
+          and travel. I also write about what I'm learning.
         </h2>
       </Section>
     </Layout>
