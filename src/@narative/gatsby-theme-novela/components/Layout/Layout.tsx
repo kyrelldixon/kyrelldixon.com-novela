@@ -4,7 +4,7 @@ import { Global, css } from "@emotion/core";
 import styled from "@emotion/styled";
 
 import NavigationFooter from "@components/Navigation/Navigation.Footer";
-import NavigationDesktop from "../Navigation/Navigation.Header";
+import NavigationDesktop from "@components/Navigation/Navigation.Header";
 import NavigationMobile from "../../../../components/Navigation/Navigation.Mobile.Header";
 import ArticlesContextProvider from "@narative/gatsby-theme-novela/src/sections/articles/Articles.List.Context";
 
@@ -19,7 +19,7 @@ interface LayoutProps {
 
 const navLinks = [
   { to: '/projects', text: 'Projects' },
-  { to: '/', text: 'Articles' },
+  { to: '/articles', text: 'Articles' },
 ];
 
 /**
