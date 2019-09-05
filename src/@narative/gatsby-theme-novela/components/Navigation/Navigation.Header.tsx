@@ -18,6 +18,7 @@ import {
 function NavigationHeader() {
   const [showBackArrow, setShowBackArrow] = useState<boolean>(false);
   const [previousPath, setPreviousPath] = useState<string>("/");
+  const [active, setActive] = useState<boolean>(false);
 
   const [colorMode] = useColorMode();
   const fill = colorMode === "dark" ? "#fff" : "#000";
@@ -65,9 +66,19 @@ function NavigationHeader() {
               <Icons.Ex fill={fill} />
             </button>
           ) : (
-            <Nav>
-              <NavItems />
-            </Nav>
+            <>
+              <MobileHamburger 
+                active={active}
+                onClick={() => setActive(!active)}
+                aria-label={active ? "Close Navigation Menu" : "Open Navigation Menu"}
+              >
+                <LeftToggle active={active} />
+                <RightToggle />
+              </MobileHamburger>
+              <Nav>
+                <NavItems />              
+              </Nav>
+            </>
           )}
         </NavControls>
       </NavContainer>
@@ -349,4 +360,49 @@ const Hidden = styled.span`
   height: 0px;
   visibility: hidden;
   overflow: hidden;
+`;
+
+const MobileHamburger = styled.button`
+  /* position: ${p => (p.fixed ? 'fixed' : 'absolute')}; */
+  position: default;
+  z-index: 999;
+  width: 30px;
+  height: 30px;
+  opacity: ${p => (p.active ? 0.5 : 1)};
+  transition: transform 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+  &::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: -80%;
+    top: -50%;
+  }
+  ${mediaqueries.desktop_up`
+    display: none;
+    visibility: hidden;
+  `}
+  @media screen and (min-height: 800px) {
+    top: 48px;
+  }
+`;
+
+const Toggle = styled.span`
+  position: absolute;
+  right: 10px;
+  height: 1px;
+  background: ${p => p.theme.colors.primary};
+  transition: transform 0.4s cubic-bezier(0.075, 0.82, 0.165, 1),
+    width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+`;
+
+const LeftToggle = styled(Toggle)`
+  top: 15px;
+  width: ${p => (p.active ? '20px' : '15px')};
+`;
+
+const RightToggle = styled(Toggle)`
+  width: 20px;
+  top: 9px;
+  transform: initial;
 `;

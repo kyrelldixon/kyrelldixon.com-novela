@@ -4,12 +4,14 @@ import { Global } from "@emotion/core";
 import styled from "@emotion/styled";
 
 import NavigationFooter from "@components/Navigation/Navigation.Footer";
-import NavigationHeader from "../Navigation/Navigation.Header";
+import NavigationDesktop from "../Navigation/Navigation.Header";
+import NavigationMobile from "../../../../components/Navigation/Navigation.Mobile.Header";
 import ArticlesContextProvider from "@narative/gatsby-theme-novela/src/sections/articles/Articles.List.Context";
 
 import { globalStyles } from "@styles";
 import theme from "@narative/gatsby-theme-novela/src/gatsby-plugin-theme-ui";
 import colors from "@narative/gatsby-theme-novela/src/gatsby-plugin-theme-ui/colors";
+import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 
 interface LayoutProps {
   children: React.ReactChild;
@@ -33,7 +35,8 @@ function Layout({ children }: LayoutProps) {
       <ArticlesContextProvider>
         <Container>
           <Global styles={globalStyles} />
-          <NavigationHeader />
+          <NavigationMobile />
+          <NavigationDesktop />
           {children}
           <NavigationFooter />
         </Container>
