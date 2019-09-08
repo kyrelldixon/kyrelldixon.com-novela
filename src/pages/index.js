@@ -15,7 +15,7 @@ const Home = () => (
         <HomeHeader>Hi! My name is Kyrell, but you can call me Kai.</HomeHeader>
         <HomeSubheader>
           I'm a full stack developer. I develop <Link to="/projects">software products</Link>, 
-          <Link to="https://is.gd/O6qzK9" external> tutor</Link>,
+          {" "}<Link to="https://is.gd/O6qzK9" external>tutor</Link>,
           and <Link to="/articles">write</Link> about what I'm learning.
         </HomeSubheader>
       </HomeContainer>
@@ -52,7 +52,6 @@ const HomeHeader = styled.h1`
 const HomeSubheader = styled.h2`
   font-size: 30px;
   color: ${p => p.theme.colors.primary};
-  opacity: 0.7;
   font-weight: 500;
 
   ${mediaqueries.tablet`
