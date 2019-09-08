@@ -23,6 +23,7 @@ const StyledLink = styled(Link)`
 
   &:hover {
     animation: ${p => p.animate ? `shine 1s linear infinite` : 'none'};
+    text-decoration: underline;
   }
 
   /* Animation from https://codepen.io/shshaw/pen/YpERQQ */
