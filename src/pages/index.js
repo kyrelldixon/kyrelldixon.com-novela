@@ -5,6 +5,7 @@ import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 import Layout from "@narative/gatsby-theme-novela/src/components/Layout";
 import Section from "@narative/gatsby-theme-novela/src/components/Section";
 import SEO from "@narative/gatsby-theme-novela/src/components/SEO";
+import Link from "../components/Link";
 
 const Home = () => (
   <Layout>
@@ -13,13 +14,15 @@ const Home = () => (
       <HomeContainer>
         <HomeHeader>Hi! My name is Kyrell, but you can call me Kai.</HomeHeader>
         <HomeSubheader>
-          I'm a full stack developer. I develop software products, teach,
-          and travel. I also write about what I'm learning.
+          I'm a full stack developer. I develop <Link to="/projects">software products</Link>, 
+          <Link to="https://is.gd/O6qzK9" external> tutor</Link>,
+          and <Link to="/articles">write</Link> about what I'm learning.
         </HomeSubheader>
       </HomeContainer>
     </HomeSection>
   </Layout>
 );
+
 const HomeSection = styled(Section)`
   position: ${p => p.relative ? 'relative' : 'fixed'};
   z-index: ${p => p.zIndex ? p.zIndex : "none"};
