@@ -14,9 +14,9 @@ const Home = () => (
       <HomeContainer>
         <HomeHeader>Hi! My name is Kyrell, but you can call me Kai.</HomeHeader>
         <HomeSubheader>
-          I'm a full stack developer. I develop <Link to="/projects">software products</Link>, 
-          {" "}<Link to="https://is.gd/O6qzK9" external>tutor</Link>,
-          and <Link to="/articles">write</Link> about what I'm learning.
+          I'm a full stack developer. I develop <Link animate to="/projects">software products</Link>, 
+          {" "}<Link animate to="https://is.gd/O6qzK9" external>tutor</Link>,
+          and <Link animate to="/articles">write</Link> about what I'm learning.
         </HomeSubheader>
       </HomeContainer>
     </HomeSection>

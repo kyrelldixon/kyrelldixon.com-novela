@@ -9,17 +9,27 @@ const Link = ({ to, children, external, ...rest }) => (
 );
 
 const StyledLink = styled(Link)`
-  transition: ${p => p.theme.colorModeTransition};
   color: ${p => p.theme.colors.accent};
+  background: ${p => p.theme.colors.accent};
+  background-image: ${p => p.theme.colors.linearGradient};
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   &:visited {
     color: ${p => p.theme.colors.accent};
-    opacity: 0.85;
   }
 
-  &:hover,
-  &:focus {
-    text-decoration: underline;
+  &:hover {
+    animation: ${p => p.animate ? `shine 1s linear infinite` : 'none'};
+  }
+
+  /* Animation from https://codepen.io/shshaw/pen/YpERQQ */
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
   }
 `;
 
