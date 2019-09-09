@@ -27,12 +27,14 @@ function NavigationHeader({ active, toggleNav, navLinks }) {
     const phablet = getBreakpointFromTheme("phablet");
 
     const prev = localStorage.getItem("previousPath");
+    const previousPathWasArticlesPage =
+      prev === "/articles" || (prev && prev.includes("/page/"));
     const previousPathWasHomepage =
       prev === "/" || (prev && prev.includes("/page/"));
     const isNotPaginated = !location.pathname.includes("/page/");
 
     setShowBackArrow(
-      previousPathWasHomepage && isNotPaginated && width <= phablet,
+      previousPathWasArticlesPage && !previousPathWasHomepage && isNotPaginated && width <= phablet,
     );
     setPreviousPath(prev);
   }, []);
