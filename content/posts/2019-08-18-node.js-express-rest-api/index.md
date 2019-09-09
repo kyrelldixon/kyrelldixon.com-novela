@@ -301,7 +301,7 @@ Your `package.json` file should now contain an object similar to this:
 }
 ```
 
-We added it to the `devDependicies` since this is just a convenient way to run the server to make development easier and isn't required to have a working application.
+We added it to the `devDependencies` since this is just a convenient way to run the server to make development easier and isn't required to have a working application.
 
 To use `nodemon` to run the server, first you want to add a `"start"` script to the `package.json` in the `"scripts"` object:
 
@@ -312,7 +312,7 @@ To use `nodemon` to run the server, first you want to add a `"start"` script to 
 },
 ```
 
-Then to run the server it you can use:
+Then to run the server you can use:
 
 ```bash
 npm start
