@@ -14,8 +14,7 @@
     "build": "gatsby build",
     "clean": "gatsby clean",
     "stage": "gatsby build && gatsby serve",
-    "eject": "gatsby-theme eject",
-    "postinstall": "patch-package"
+    "eject": "gatsby-theme eject"
   },
   "devDependencies": {
     "gatsby-theme": "^0.0.6"
