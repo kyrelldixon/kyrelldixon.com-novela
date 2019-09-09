@@ -34,7 +34,7 @@ function Layout({ children }: LayoutProps) {
 
   const MOBILE_NAV_DURATION = 500;
   const MOBILE_NAV_OFFSET = 576;
-  const MOBILE_NAV_OFFSET_SHORT = 420;
+  const MOBILE_NAV_OFFSET_SHORT = 320;
   
   let finalTheme = theme;
   
