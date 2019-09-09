@@ -7,7 +7,7 @@ import Image, { ImagePlaceholder } from "@components/Image";
 import mediaqueries from "@styles/media";
 import { IArticle, IAuthor } from "@types";
 
-import ArticleAuthors from "./Article.Authors";
+import ArticleAuthors from "@narative/gatsby-theme-novela/src/sections/article/Article.Authors";
 
 interface ArticleHeroProps {
   article: IArticle;
