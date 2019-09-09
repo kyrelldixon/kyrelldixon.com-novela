@@ -6,6 +6,7 @@ import Layout from "@narative/gatsby-theme-novela/src/components/Layout";
 import Section from "@narative/gatsby-theme-novela/src/components/Section";
 import SEO from "@narative/gatsby-theme-novela/src/components/SEO";
 import Link from "../components/Link";
+import ArrowLink from "../components/ArrowLink";
 
 const Home = () => (
   <Layout>
@@ -18,6 +19,7 @@ const Home = () => (
           {" "}<Link animate to="https://is.gd/O6qzK9" external>tutor</Link>,
           and <Link animate to="/articles">write</Link> about what I'm learning.
         </HomeSubheader>
+        <ArrowLink text="Recent Articles" to="/articles" />
       </HomeContainer>
     </HomeSection>
   </Layout>
@@ -53,6 +55,7 @@ const HomeSubheader = styled.h2`
   font-size: 30px;
   color: ${p => p.theme.colors.primary};
   font-weight: 500;
+  margin-bottom: 60px;
 
   ${mediaqueries.tablet`
     font-size: 24px;
