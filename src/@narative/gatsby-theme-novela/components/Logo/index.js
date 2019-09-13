@@ -2,7 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useColorMode } from "theme-ui";
 
-import logo from '../../../../assets/kd6 logo.svg';
+import logo from '../../../../assets/kd6 logo.png';
+import logoDark from '../../../../assets/kd6 logo(dark mode).png';
 
 const Logo = () => {
   const [colorMode, ] = useColorMode();
@@ -10,7 +11,7 @@ const Logo = () => {
   
   return (
     <div>
-      <Img src={logo} />
+      <Img src={isDark ? logoDark : logo} />
     </div>
   )
 }
