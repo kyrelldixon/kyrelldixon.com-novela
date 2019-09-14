@@ -40,7 +40,7 @@ const HomeContainer = styled.div`
 `;
 
 const HomeHeader = styled.h1`
-  font-weight: 600;
+  font-weight: 800;
   font-size: 52px;
   line-height: 1.15;
   color: ${p => p.theme.colors.primary};
