@@ -32,11 +32,11 @@ module.exports = {
         contentPosts: "content/posts",
         contentAuthors: "content/authors",
         basePath: "/articles",
+        mailchimp: true,
         sources: {
           local: true,
           contentful: false,
         },
-        mailchimp: true,
       },
     },
     {
@@ -60,9 +60,9 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-plugin-mailchimp',
+      resolve: `gatsby-plugin-mailchimp`,
       options: {
-        endpoint: '2d60e20754af6d5ea8e855f91', // add your MC list endpoint here; see plugin repo for instructions
+        endpoint: 'https://gmail.us3.list-manage.com/subscribe/post?u=2d60e20754af6d5ea8e855f91&amp;id=90e1334ab6', // add your MC list endpoint here; see plugin repo for instructions
       },
     },
   ],
