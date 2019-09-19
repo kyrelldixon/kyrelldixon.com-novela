@@ -16,11 +16,15 @@ I include links to helpful resources that will go more into depth on specific co
 
 ## What will you be making
 
+![Time Heist Leaderboard](./images/time-heist-screenshot.jpg)
+
 I've been getting a lot of questions on how to build a full stack Vue.js application using Vuex, Vue Router, and Firebase complete with authentication, so I decided to make one. Time Heist is a Product Hunt clone where users can upload trips instead of products.
 
 This post walks through some fundamental Vue concepts like list rendering, computed properties, and props and how they can be used to build the leaderboard page of Time Heist. The final version is a dynamically rendered list of trips sorted by likes/upvotes.
 
 Users will also be able to upvote trips as many times as they like, but this will eventually be limited to a single vote per trip.
+
+You can view the finished project [here](https://ph-leaderboard.netlify.com/).
 
 ## Why Tailwind and Vue.js
 
