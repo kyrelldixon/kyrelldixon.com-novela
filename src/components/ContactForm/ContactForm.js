@@ -55,7 +55,7 @@ const ContactForm = () => {
   }
   const sendMail = (values) => {
     const { name, details } = values;
-    const myEmail = 'kyrell@studentdevcoach.com';
+    const myEmail = 'kyrell@kyrelldixon.com';
     const subject = `I'd like to work with you - ${name}`;
     const body = `Hi Kyrell,${newLine(2)}${details}`;
     const formattedBody = body.replace('\n', newLine(1))
