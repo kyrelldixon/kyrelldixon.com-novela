@@ -34,8 +34,7 @@ function Layout({ children }: LayoutProps) {
   const [mobileNavOffset, setMobileNavOffset] = useState<number>(0);
 
   const MOBILE_NAV_DURATION = 500;
-  const MOBILE_NAV_OFFSET = 576;
-  const MOBILE_NAV_OFFSET_SHORT = 320;
+  const MOBILE_NAV_OFFSET = navLinks.length * 80 + 200;
   
   let finalTheme = theme;
   
@@ -45,7 +44,7 @@ function Layout({ children }: LayoutProps) {
   
   function toggleNav() {
     setActive(!active);
-    setMobileNavOffset(MOBILE_NAV_OFFSET_SHORT);
+    setMobileNavOffset(MOBILE_NAV_OFFSET);
   }
 
   useEffect(() => {
