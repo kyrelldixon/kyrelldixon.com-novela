@@ -1,0 +1,1061 @@
+---
+title: "Creating a Product Hunt Clone with Vue.js and Tailwind CSS - Part 2"
+author: Kyrell Dixon
+date: 2019-09-21
+hero: ./images/hero.jpg
+slug: creating-a-product-hunt-clone-with-vuejs-and-tailwind-part-2
+excerpt: This is Part 2 of Creating a Product Hunt Clone with Vue.js where I add in the rest of the pages and connect them with Vue Router.
+category: javascript
+secret: true
+---
+
+This post is part 2 of this series.
+
+## Drafting Notes
+
+- [x] Create landing & leaderboard pages
+- [x] Seting up [Vue router](https://router.vuejs.org/installation.html)
+- [x] Set up routing between pages
+- [x] Style landing page
+- [x] Create general Layout component for pages
+- [ ] Create, style, and route to:
+  - [x] login page
+  - [x] sign up page
+
+## Create Landing & leaderboard pages
+
+```bash
+mkdir src/pages
+touch src/pages/{Leaderboard,index}.vue
+```
+
+Copy `App.vue` code to leaderboard page and fix imports
+
+`Leaderboard.vue`
+
+```html
+<template>
+  <div class="bg-gray-200 h-screen">
+    <navbar />
+    <section>
+      <div class="mx-4 lg:mx-auto mt-20 max-w-4xl">
+        <h1 class="font-bold uppercase tracking-wide mb-8">Leaderboard</h1>
+        <leaderboard-card 
+          v-for="trip in sortedTrips"
+          :key="trip.id"
+          :trip="trip"
+          :upVote="upVote"
+        />
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+import Navbar from '../components/Navbar'
+import LeaderboardCard from '../components/LeaderboardCard'
+
+export default {
+  components: {
+    'navbar': Navbar,
+    'leaderboard-card': LeaderboardCard,
+  },
+  data: function() {
+    return {
+      trips: [
+        {
+          id: 2,
+          title: "Digital Nomad Paradise",
+          city: "Chiang Mai",
+          likes: 42,
+        },
+        {
+          id: 1,
+          title: "The Best Vacation Ever",
+          city: "Paris",
+          likes: 57,
+        },
+        {
+          id: 3,
+          title: "Becoming Batman",
+          city: "Gotham",
+          likes: 23,
+        },
+      ],
+    }
+  },
+  computed: {
+    sortedTrips: function() {
+      return [...this.trips].sort((a, b) => b.likes - a.likes)
+    }
+  },
+  methods: {
+    upVote: function(id) {
+      this.trips = this.trips.map(trip => {
+        if (trip.id === id) {
+          return {
+            ...trip,
+            likes: trip.likes + 1
+          }
+        }
+        return trip;
+      });
+    }
+  }
+}
+</script>
+```
+
+Fixed the imports:
+
+```js
+import Navbar from '../components/Navbar' // previously './components/Navbar'
+import LeaderboardCard from '../components/LeaderboardCard' // previously './components/LeaderboardCard'
+```
+
+`App.vue`
+
+```html
+<template>
+  <h1>App.vue</h1>
+</template>
+```
+
+`index.vue`
+
+```html
+<template>
+  <h1>Landing page</h1>
+</template>
+```
+
+Now when you refresh the page you should see:
+
+![Plain App.vue header in browser](./images/remove-leaderboard-from-app.jpg)
+
+## Setting up Vue Router
+
+```bash
+yarn add vue-router
+```
+
+Create `routes.js`:
+
+```js
+import Leaderboard from './pages/Leaderboard'
+import Landing from './pages'
+
+const routes = [
+  { path: '/', component: Landing },
+  { path: '/home', component: Leaderboard },
+]
+
+export default routes;
+```
+
+Leaderboard will be `'/home'` path since this should be the page users see when they log in.
+
+`main.js`
+
+```js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+import routes from './routes'
+import App from './App.vue'
+
+import './assets/styles/tailwind.css'
+
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+  mode: 'history',
+  routes,
+})
+
+Vue.config.productionTip = false
+
+new Vue({
+  router,
+  render: h => h(App),
+}).$mount('#app')
+```
+
+To view add `router-view` tag:
+
+`App.vue`
+
+```html
+<template>
+  <router-view></router-view>
+</template>
+```
+
+## Initial Routing with Logo
+
+`Navbar.vue`
+
+```html
+<template>
+  <nav class="bg-black text-white px-4 md:px-8 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <router-link to="/"><img class="h-12" src="../assets/logo.png" /></router-link>
+      <div>
+        <button class="uppercase text-xs">Log In</button>
+        <button class="uppercase text-xs px-4 py-2 bg-gradient rounded ml-4">Sign Up</button>
+      </div>
+    </div>
+    </nav>
+</template>
+```
+
+Wrap logo in `router-link` and set `to="/"` so clicking logo takes you to root of site.
+
+## Style Landing page
+
+`index.vue`
+
+```html
+<template>
+  <section class="bg-black h-screen text-white">
+    <navbar />
+    <div class="text-center max-w-xl mt-32 mx-8 sm:mx-auto sm:mt-24 md:mt-20">
+      <h1 class="font-bold text-3xl mb-4 sm:text-5xl md:text-5xl md:mb-6">
+        Wish List of Trips for You and Your Friends
+      </h1>
+      <p class="mb-8 sm:mb-12 sm:text-lg md:mb-12 opacity-75">
+        Add places you want to go with people you want to go with and start checking them off your list.
+      </p>
+      <button class="uppercase text-sm px-10 py-4 bg-gradient rounded ml-4 sm:text-lg md:text-lg">
+        Sign Up
+      </button>
+    </div>
+  </section>
+</template>
+
+<script>
+import Navbar from '../components/Navbar'
+
+export default {
+  components: {
+    navbar: Navbar
+  }
+}
+</script>
+```
+
+## Create sign up page
+
+```bash
+touch src/pages/Register.vue
+```
+
+`Register.vue`
+
+```html
+<template>
+  <h1>Sign Up</h1>
+</template>
+```
+
+`routes.js`
+
+```js
+import Leaderboard from './pages/Leaderboard'
+import Landing from './pages'
+import Register from './pages/Register'
+
+const routes = [
+  { path: '/', component: Landing },
+  { path: '/home', component: Leaderboard },
+  { path: '/register', component: Register },
+]
+
+export default routes
+```
+
+`Navbar.vue`
+
+```html
+<template>
+  <nav class="bg-black text-white px-4 md:px-8 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <router-link to="/"><img class="h-12" src="../assets/logo.png" /></router-link>
+      <div>
+        <button class="uppercase text-xs">Log In</button>
+        <router-link to="/register">
+          <button class="uppercase text-xs px-4 py-2 bg-gradient rounded ml-4">Sign Up</button>
+        </router-link>
+      </div>
+    </div>
+    </nav>
+</template>
+```
+
+`index.vue`
+
+```html
+<template>
+  <section class="bg-black h-screen text-white">
+    <navbar />
+    <div class="text-center max-w-xl mt-32 mx-8 sm:mx-auto sm:mt-24 md:mt-20">
+      <h1 class="font-bold text-3xl mb-4 sm:text-5xl md:text-5xl md:mb-6">
+        Wish List of Trips for You and Your Friends
+      </h1>
+      <p class="mb-8 sm:mb-12 sm:text-lg md:mb-12 opacity-75">
+        Add places you want to go with people you want to go with and start checking them off your list.
+      </p>
+      <router-link to="/register">
+        <button class="uppercase text-sm px-10 py-4 bg-gradient rounded ml-4 sm:text-lg md:text-lg">
+          Sign Up
+        </button>
+      </router-link>
+    </div>
+  </section>
+</template>
+```
+
+## Create layout component
+
+`Layout.vue`
+
+```html
+<template>
+  <section>
+    <navbar />
+    <router-view />
+  </section>
+</template>
+
+<script>
+import Navbar from '../components/Navbar'
+
+export default {
+  components: {
+    navbar: Navbar,
+  }
+}
+</script>
+```
+
+`main.js`
+
+```js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+import routes from './routes'
+import Layout from './components/Layout'
+
+import './assets/styles/tailwind.css'
+
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+  mode: 'history',
+  routes,
+})
+
+Vue.config.productionTip = false
+
+new Vue({
+  router,
+  render: h => h(Layout),
+}).$mount('#app')
+```
+
+`Leaderboard.vue`
+
+```html
+<template>
+  <section class="bg-gray-200 pt-20 pb-2">
+    <div class="mx-4 max-w-4xl lg:mx-auto">
+      <h1 class="font-bold uppercase tracking-wide mb-8">Leaderboard</h1>
+      <leaderboard-card
+        v-for="trip in sortedTrips"
+        :key="trip.id"
+        :trip="trip"
+        :upVote="upVote"
+      />
+    </div>
+  </section>
+</template>
+
+<script>
+import LeaderboardCard from '../components/LeaderboardCard'
+
+export default {
+  components: {
+    'leaderboard-card': LeaderboardCard,
+  },
+  // data: { ... }
+}
+</script>
+```
+
+`Register.vue`
+
+```html
+<template>
+  <section class="bg-black text-white h-screen pt-8 px-4 sm:pt-10 md">
+    <div class="max-w-sm mx-auto">
+      <div class="mb-6">
+        <h1 class="text-3xl tracking-wide font-bold mb-1 leading-tight">Create Your Account</h1>
+        <p class="text-sm">Already have an account? <span class="text-gradient">Log In</span></p>
+      </div>
+      <form class="max-w-sm">
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="name">Name</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Your Name">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="email">Email Address</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="your@email.com"></div>
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="username">Username</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="your_username">
+        </div>
+        <div class="mb-8">
+          <label class="block mb-2 text-sm" for="password">Password</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+        </div>
+        <button class="uppercase text-xs px-4 py-2 bg-gradient rounded">Create Account</button>
+      </form>
+    </div>
+  </section>
+</template>
+```
+
+## Reusable button
+
+Copy styles from button in `Register.vue`
+
+`Button.vue`
+
+```html
+<template>
+  <button class="uppercase text-xs px-4 py-2 bg-gradient rounded">
+    <slot />
+  </button>
+</template>
+```
+
+Here `<slot />` is used as a placeholder for anything you want to pass in. This makes the button flexible.
+
+`Register.vue`
+
+```html
+<template>
+  <section class="bg-black text-white h-screen pt-8 px-4 sm:pt-10 md">
+    <div class="max-w-sm mx-auto">
+      <div class="mb-6">
+        <h1 class="text-3xl tracking-wide font-bold mb-1 leading-tight">Create Your Account</h1>
+        <p class="text-sm">Already have an account? <span class="text-gradient">Log In</span></p>
+      </div>
+      <form class="max-w-sm">
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="name">Name</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Your Name">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="email">Email Address</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="your@email.com"></div>
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="username">Username</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="your_username">
+        </div>
+        <div class="mb-8">
+          <label class="block mb-2 text-sm" for="password">Password</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+        </div>
+        <styled-button>Create Account</styled-button>
+      </form>
+    </div>
+  </section>
+</template>
+
+<script>
+import Button from '../components/Button'
+
+export default {
+  components: {
+    "styled-button": Button
+  }
+}
+</script>
+```
+
+Using [slots](https://vuejs.org/v2/guide/components-slots.html)
+
+`Navbar.vue`
+
+```html
+<template>
+  <nav class="bg-black text-white px-4 md:px-8 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <router-link to="/"><img class="h-12" src="../assets/logo.png" /></router-link>
+      <div>
+        <button class="uppercase text-xs">Log In</button>
+        <router-link to="/register">
+          <styled-button class="ml-4">Sign Up</styled-button>
+        </router-link>
+      </div>
+    </div>
+    </nav>
+</template>
+
+<script>
+import Button from '../components/Button'
+
+export default {
+  components: {
+    "styled-button": Button
+  }
+}
+</script>
+```
+
+## Hide Nav buttons on sign up
+
+Add a method to dynamically display navbar buttons based on the route. Used [class binding](https://vuejs.org/v2/guide/class-and-style.html).
+
+`Navbar.vue`
+
+```html
+<template>
+  <nav class="bg-black text-white px-4 md:px-8 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <router-link to="/"><img class="h-12" src="../assets/logo.png" /></router-link>
+      <div :class="{hidden: isHidden()}">
+        <button class="uppercase text-xs">Log In</button>
+        <router-link to="/register">
+          <styled-button class="ml-4">Sign Up</styled-button>
+        </router-link>
+      </div>
+    </div>
+    </nav>
+</template>
+
+<script>
+import Button from '../components/Button'
+
+export default {
+  components: {
+    "styled-button": Button
+  },
+  methods: {
+    isHidden: function() {
+      return this.$route.path === '/register'
+    }
+  }
+}
+</script>
+```
+
+## Add login page
+
+`Login.vue`
+
+```html
+<template>
+  <h1>Sign In</h1>
+</template>
+```
+
+`Register.vue`
+
+```html
+<router-link to="/login">
+  <span class="text-gradient">Log In</span>
+</router-link>
+```
+
+`routes.js`
+
+```js
+import Leaderboard from './pages/Leaderboard'
+import Landing from './pages'
+import Register from './pages/Register'
+import Login from './pages/Login'
+
+const routes = [
+  { path: '/', component: Landing },
+  { path: '/home', component: Leaderboard },
+  { path: '/register', component: Register },
+  { path: '/login', component: Login },
+]
+
+export default routes
+```
+
+`Navbar.vue`
+
+```html
+<router-link to="/login">
+  <button class="uppercase text-xs">Log In</button>
+</router-link>
+```
+
+Hide buttons on login and register
+
+`Navbar.vue`
+
+```js
+methods: {
+  isHidden: function() {
+    const { path } = this.$route
+    return path === '/register' || path === '/login'
+  }
+}
+```
+
+## Style Login page
+
+`Login.vue`
+
+Login is almost exactly the same as Register minus a few form fields and some different copy. Would probably be a good idea to refactor.
+
+```html
+<template>
+  <section class="bg-black text-white h-screen pt-12 px-4">
+    <div class="max-w-sm mx-auto">
+      <div class="mb-6">
+        <h1 class="text-3xl tracking-wide font-bold mb-2 leading-tight">Log In Below</h1>
+        <p class="text-sm">
+          Don't have an account? 
+          <router-link to="/register">
+            <span class="text-gradient">Sign Up</span>
+          </router-link>
+        </p>
+      </div>
+      <form class="max-w-sm">
+        <div class="mb-4">
+          <label class="block mb-2 text-sm" for="email">Email Address</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="your@email.com"></div>
+        <div class="mb-8">
+          <label class="block mb-2 text-sm" for="password">Password</label>
+          <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+        </div>
+        <styled-button class="mb-3">Create Account</styled-button>
+        <p class="text-gradient text-sm cursor-pointer">Forgot Password?</p>
+      </form>
+    </div>
+  </section>
+</template>
+
+<script>
+import Button from '../components/Button'
+
+export default {
+  components: {
+    "styled-button": Button
+  }
+}
+</script>
+```
+
+## prevent default
+
+Add `@submit.prevent` to forms on register and login pages so forms don't reload the page on button click.
+Based on [Event modifiers](https://vuejs.org/v2/guide/events.html#Event-Modifiers).
+
+`Login.vue`
+
+```html
+<form @submit.prevent class="max-w-sm">
+  <div class="mb-4">
+    <label class="block mb-2 text-sm" for="email">Email Address</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="your@email.com"></div>
+  <div class="mb-8">
+    <label class="block mb-2 text-sm" for="password">Password</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+  </div>
+  <styled-button class="mb-3 px-6">Log In</styled-button>
+  <p class="text-gradient text-sm cursor-pointer">Forgot Password?</p>
+</form>
+```
+
+`Register.vue`
+
+```html
+<form @submit.prevent class="max-w-sm">
+  <div class="mb-4">
+    <label class="block mb-2 text-sm" for="name">Name</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Your Name">
+  </div>
+  <div class="mb-4">
+    <label class="block mb-2 text-sm" for="email">Email Address</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="your@email.com"></div>
+  <div class="mb-4">
+    <label class="block mb-2 text-sm" for="username">Username</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="your_username">
+  </div>
+  <div class="mb-8">
+    <label class="block mb-2 text-sm" for="password">Password</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+  </div>
+  <styled-button>Create Account</styled-button>
+</form>
+```
+
+## Add login and register methods
+
+Navigate to "/home" route on login. Using [programmatic navigation](https://router.vuejs.org/guide/essentials/navigation.html) which essentially means we are using javascript to handle the navigation instead of the typical `<router-link to="..."></router-link>` tag which is more similar to normal navigation with the `<a href="..."></a>` tag.
+
+`Login.vue`
+
+```js
+methods: {
+  login: function() {
+    this.$router.push("/home")
+  }
+}
+```
+
+`Register.vue`
+
+```js
+methods: {
+  register: function() {
+    this.$router.push("/login")
+  }
+}
+```
+
+`Login.vue`
+
+**FIX THE STYLES ON THE HTML FOR LOGIN ABOVE THIS. EVERYTHING BELOW SHOULD BE CORRECT**
+
+```html
+<form @submit.prevent="login" class="max-w-sm">
+  <div class="mb-4">
+    <label class="block mb-2 text-sm" for="email">Email Address</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="your@email.com"></div>
+  <div class="mb-8">
+    <label class="block mb-2 text-sm" for="password">Password</label>
+    <input class="text-gray-700 rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password">
+  </div>
+  <styled-button class="mb-3 px-6">Log In</styled-button>
+  <p class="text-gradient text-sm cursor-pointer">Forgot Password?</p>
+</form>
+```
+
+## Handle form state
+
+Basically used vuelidate and a couple links to get it working. Was pretty straight-forward.
+
+Add a static and dynamic class (`:class`) to the login and register components for styling based on vuelidate error.
+[This](https://michaelnthiessen.com/dynamically-add-class-name) tutorial helped. Look at the [docs](https://vuelidate.netlify.com/#sub-contextified-validators) for vuelidate to determine how to add errors.
+Use `v-if` to conditionally display error messages.
+Disable client side validation with help from [Stack Overflow](https://stackoverflow.com/questions/3090369/disable-validation-of-html5-form-elements).
+
+## Update router
+
+Use [Navigation Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html#in-component-guards) to handle redirect and protect certain routes.
+
+`router.js`
+
+```js
+import VueRouter from 'vue-router'
+
+import Leaderboard from './pages/Leaderboard'
+import Landing from './pages/Landing'
+import Register from './pages/Register'
+import Login from './pages/Login'
+
+import store from './store'
+
+const routes = [
+  {
+    path: '/',
+    component: Landing,
+    beforeEnter: (to, from, next) => {
+      // the new homepage is '/home' if you are logged in
+      // so this will always redirect there
+      if (store.state.auth.isLoggedIn) {
+        next('/home')
+        return
+      }
+      next()
+    }
+  },
+  {
+    path: '/home',
+    component: Leaderboard,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/register',
+    component: Register,
+  },
+  {
+    path: '/login',
+    component: Login,
+  },
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.state.auth.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  }
+  else {
+    next()
+  }
+})
+
+export default router
+```
+
+## Firebase
+
+Viewed [this tutorial](https://garywoodfine.com/how-to-install-firebase-with-vue-js/) for help.
+
+Create a project according to the [instructions](https://firebase.google.com/docs/web/setup)
+Copy script setup (I have analytics enabled so the instructions will be for both core setup and setup with analytics)
+
+```html
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBxJsCfquCD825UxHZrT2DsHgm_59FkZps",
+    authDomain: "time-heist-82884.firebaseapp.com",
+    databaseURL: "https://time-heist-82884.firebaseio.com",
+    projectId: "time-heist-82884",
+    storageBucket: "",
+    messagingSenderId: "1074738980517",
+    appId: "1:1074738980517:web:247ded0d15393571a4cf4c",
+    measurementId: "G-T74XR8FRQK"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+```
+
+Create `.env.development.local` file to store config info from the firebaseConfig that you copied:
+
+```bash
+VUE_APP_FIREBASE_API_KEY=AIzaSyBxJsCfquCD825UxHZrT2DsHgm_59FkZps
+VUE_APP_FIREBASE_AUTH_DOMAIN=time-heist-82884.firebaseapp.com
+VUE_APP_FIREBASE_DB_URL=https://time-heist-82884.firebaseio.com
+VUE_APP_FIREBASE_PROJECT_ID=time-heist-82884
+VUE_APP_FIREBASE_STORAGE_BUCKET=
+VUE_APP_FIREBASE_MESSAGING_SENDER_ID=1074738980517
+VUE_APP_FIREBASE_APP_ID=1:1074738980517:web:247ded0d15393571a4cf4c
+VUE_APP_FIREBASE_MEASUREMENT_ID=G-T74XR8FRQK
+```
+
+This helped [Vue .env files](https://cli.vuejs.org/guide/mode-and-env.html#modes)
+
+Create `src/firebase/credentials` file:
+
+```js
+export default {
+  config: {
+    apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+    authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+    storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+    databaseURL: process.env.VUE_APP_FIREBASE_DB_URL,
+    projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+    messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.VUE_APP_FIREBASE_APP_ID,
+    measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
+  }
+}
+```
+
+Enable the email/password sign in method (got pictures for this process)
+Install firebase in project `yarn add firebase #or npm install firebase`
+
+Set up Vuex to work with Firebase. Required understanding [actions](https://vuex.vuejs.org/guide/actions.html)
+Another helpful example on Firebase and Vuex in this [Github repo](https://github.com/aofdev/vue-firebase-auth-vuex/blob/master/src)
+Also [this link](https://stackoverflow.com/questions/40165766/returning-promises-from-vuex-actions) was helpful for realizing I could just return the Firebase function calls since they are promises. The `throw err` line makes it so I can catch the errors in a component and use them. Currently just displaying an `alert` of the error code.
+
+```js
+import { Auth } from '../../firebase/auth'
+
+const state = {
+  isLoggedIn: false,
+}
+
+const actions = {
+  login({ commit }, { email, password }) {
+    return Auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      commit('setIsLoggedIn', true)
+    })
+    .catch(err => { throw err })
+  },
+  logout({ commit }) {
+    return Auth.signOut()
+    .then(() => {
+      commit('setIsLoggedIn', false)
+    })
+    .catch(err => { throw err })
+  },
+  register({ commit }, { email, password }) {
+    return Auth.createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      // user is automatically logged in when account is registered
+      // so update state to reflect that
+      commit('setIsLoggedIn', true)
+    })
+    .catch(err => { throw err })
+  }
+}
+
+const mutations = {
+  setIsLoggedIn(state, isLoggedIn) {
+    state.isLoggedIn = isLoggedIn
+  }
+}
+
+export default {
+  state,
+  actions,
+  mutations,
+}
+```
+
+Add register and login dispatch on form submit
+
+```js
+login: function() {
+  this.$store.dispatch('login', { email: this.email, password: this.password })
+  .then(() => {
+    this.$router.push('/home')
+  })
+  .catch(err => alert(err.code))
+}
+```
+
+```js
+register: function() {
+  this.$store.dispatch('register', { email: this.email, password: this.password })
+  .then(() => {
+    this.$router.push('/home')
+  })
+  .catch(err => alert(err.code))
+}
+```
+
+## TODO
+
+- Add user to database
+- Add trips to database
+- Fetch trips from database
+- Link images to database
+- Add `createdBy` field to trip with user id
+- Add file upload to form
+- Add styling for multiple file upload
+- Store files in Google Storage
+
+### Login Persistence
+
+`main.js`
+
+```js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuelidate from 'vuelidate'
+
+import router from './router'
+import store from './store'
+import Layout from './components/Layout'
+import { Auth } from './firebase/auth'
+
+import './assets/styles/tailwind.css'
+
+Vue.use(VueRouter)
+Vue.use(Vuelidate)
+
+Vue.config.productionTip = false
+
+new Vue({
+  router,
+  store,
+  created() {
+    Auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoLoginUser', user)
+      }
+    })
+  },
+  render: h => h(Layout),
+}).$mount('#app')
+```
+
+`store/modules/auth.js`
+
+```js
+const actions = {
+  // ...
+  autoLoginUser({ commit }, user) {
+    commit('setCurrentUser', {
+      id: user.uid,
+      name: user.displayName,
+      email: user.email,
+      profilePicture: user.photoURL,
+    })
+  }
+}
+```
+
+### Bug fix for login state
+
+Basically if you navigated directly to the login page while firebase was still fetching the currently logged in user, the app wouldn't redirect. To fix this, I added a loading state for auto logging in and conditional rendered either the router view or loading state.
+
+For a nice spinner I user [epic spinners](https://epic-spinners.epicmax.co/)
+
+### Add lazy loading to decrease bundle size
+
+I was getting the bundle too big warning on Netlify
+
+```bash
+12:51:40 PM: asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+12:51:40 PM: This can impact web performance.
+12:51:40 PM: Assets:
+12:51:40 PM:   css/app.2b452511.css (628 KiB)
+12:51:40 PM:   js/chunk-vendors.353ecd80.js (390 KiB)
+12:51:40 PM:  warning
+12:51:40 PM: entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+12:51:40 PM: Entrypoints:
+12:51:40 PM:   app (1.07 MiB)
+12:51:40 PM:       css/chunk-vendors.6ae03bcc.css
+12:51:40 PM:       js/chunk-vendors.353ecd80.js
+12:51:40 PM:       css/app.2b452511.css
+12:51:40 PM:       js/app.ca7b561e.js
+12:51:40 PM:  warning
+12:51:40 PM: webpack performance recommendations:
+12:51:40 PM: You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+12:51:40 PM: For more info visit https://webpack.js.org/guides/code-splitting/
+12:51:40 PM:   File                                   Size              Gzipped
+12:51:40 PM:   dist/js/chunk-vendors.353ecd80.js      390.08 KiB        117.88 KiB
+12:51:40 PM:   dist/js/app.ca7b561e.js                27.69 KiB         6.51 KiB
+12:51:40 PM:   dist/css/app.2b452511.css              628.21 KiB        76.02 KiB
+12:51:40 PM:   dist/css/chunk-vendors.6ae03bcc.css    49.56 KiB         4.82 KiB
+12:51:40 PM:   Images and other types of assets omitted.
+```
+
+So I decided to add in some lazy loading to see if this would help.
+
+Followed [this guide](https://blog.logrocket.com/lazy-loading-in-vue-js/)
+

@@ -1,0 +1,305 @@
+---
+title: 5 ways to loop through an array with JavaScript
+author: Kyrell Dixon
+date: 2020-01-23
+slug: 5-ways-to-loop-through-an-array-with-javascript
+hero: ./images/hero.jpg
+excerpt: Here are 5 ways to iterate through array values with examples and a quick explanation of how each one works.
+---
+
+Here are 5 ways to iterate through array values with examples and a quick explanation of how each one works.
+
+## 1. The `for` loop
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+for (let i = 0; i < numbers.length; i++) {
+  console.log(numbers[i]) // prints 1 2 3 4 5
+}
+```
+
+The `for` loop is typically the first way most college developers learn how to loop through data.
+It has 3 main parts, each separated by a semicolon. Each part is completely optional, but usually takes on one of 3 roles:
+
+* The initializer
+* The condition
+* The incrementer
+
+### The Initializer
+
+The *initializer* is run the first time the loop starts. In the example above, `i` is initialized to `0` so that the loop will access
+all the array values starting from the first. Most developers use `i` in loops to reference the index of an array, but any value can be
+used.
+
+In the *initializer* section, you can initialize as many values as you like including **no values at all**. Below is an example of
+some completely unnecessary values being initialized. You can probably tell I was hungry when I wrote this.
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+for (let i = 0, food = ['burgers', 'fries', 'shake'], name = 'Kai'; i < numbers.length; i++) {
+  console.log(numbers[i]) // prints 1 2 3 4 5
+}
+```
+
+With no values, you still have to include the semicolon for that section so that JavaScript can tell the difference between each part.
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+let i = 0;
+for (; i < numbers.length; i++) {
+  console.log(numbers[i]) // prints 1 2 3 4 5
+}
+```
+
+Although you will probably never see it written this way, the code above is still completely valid. With or without the initializer,
+the loop can still run as long as there is a condition.
+
+### The Condition
+
+The *condition* is a statement that evaluates to `true` or `false`. While the value is `true`, the loop will run infinitely or until
+it crashes. It stops when the statement evaluates to `false`.
+
+Here's an example of a loop that will run until it sees a certain number in the array.
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+for (let i = 0; numbers[i] !== 3; i++) {
+  console.log(numbers[i]) // prints 1 2
+}
+```
+
+The condition section is the one you have to be the most careful with since you have to make sure that at some point it will be `false`.
+In the above example, if you remove `3` from the array, it will run infinitely.
+
+One way you could fix it is by having a second condition that checks if there are any values left.
+
+```js
+const numbers = [1, 2, 4, 5]
+for (let i = 0; numbers[i] !== 3 && numbers[i] !== undefined; i++) {
+  console.log(numbers[i]) // prints 1 2 4 5
+}
+```
+
+The condition can be interpreted as "loop while the value in the array is not 3 and not undefined".
+When the array reaches `numbers[4]`, the value will be undefined since the last element, `5` is at `numbers[3]`.
+
+### The Incrementer
+
+The *incrementer* is last section in a `for` loop and it is run after each iteration. This statement is what updates the initial value so the loop can make progress
+through the array.
+
+It is usually set to `i++` or `++i` to increment `i` by one, but it can be modified in any way.
+
+Here is an example of doubling `i` and adding 1 each loop iteration.
+
+```js
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+for (let i = 0; i < numbers.length; i = i * 2 + 1) {
+  console.log(numbers[i]) // prints 1 2 4 8
+}
+```
+
+This `for` loop is very flexible and gives you the most power over how you iterate over an array. Here are a few more examples of different
+ways to iterate through an array with a `for` loop.
+
+```js
+// Iterating backwards
+const backwardsWords = ['backwards.', 'sentence', 'this', 'wrote', 'I']
+for (let i = backwardsWords.length - 1; i >= 0; i--) {
+  console.log(backwardsWords[i]) // prints I wrote this sentence backwards.
+}
+```
+
+## 2. The `for in` loop
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+for (let i in numbers) {
+  console.log(numbers[i]) // prints 1 2 3 4 5
+}
+```
+
+The `for in` loop is a great way to loop through array values without worrying about the condition or incrementer.
+This loop automatically extracts out each index of the array which can then be used to log a value.
+
+The loop is much less flexible for array values, but it's also much more simple to use.
+
+## 3. The `while` loop
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+let i = 0
+while (i < numbers.length) {
+  console.log(numbers[i]) // prints 1 2 3 4 5
+  i++
+}
+```
+
+The `while` loop is the go-to loop when you want to run code based on just a condition and don't necessarily care about iteration.
+
+Much like the `for` loop, it watches for a condition to become `false` before it stops. The main difference is that since it *only*
+cares about a condition, it is typically used more flexibly than a normal `for` loop.
+
+Here's another example of looping backward and forwards through an array with a `while` loop.
+
+```js
+const palindrome = [
+  "is", "it", "crazy", "how", "saying", "sentences", "backwards",
+  "creates",
+  "backwards", "sentences", "saying", "how", "crazy", "it", "is"
+]
+
+let readForwards = false
+let readBackwards = false
+let i = 0
+while (!(readForwards && readBackwards)) {
+  const word = sameBackwardAndForward[i]
+  console.log(word)
+  // has i gotten to the end of the array
+  if (i === palindrome.length - 1) {
+    readForwards = true
+  }
+  // has i gotten to the end of the array
+  // and back to the beginning
+  if (readForwards && i === 0) {
+    readBackwards = true
+  }
+  // if it hasn't reached the end, push it closer
+  // to the end by incrementing
+  if (!readForwards) {
+    i++
+  }
+  // if i has gotten to the end and it's not
+  // back at the beginning, keep pushing it backwards
+  if (readForwards && !readBackwards) {
+    i--
+  }
+}
+```
+
+The above example is a bit more complex, but this just goes to show how powerful a while loop can be.
+
+One other note is that a `for` loop can actually be made to function as a `while` loop if you remove the initializer and incrementer.
+This next example will show a `while` loop and its `for` loop equivalent.
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+let i = 0
+while (i < numbers.length) {
+  console.log(numbers[i]) // prints 1 2 3 4 5
+  i++
+}
+
+let j = 0
+for (;j < numbers.length;) {
+  console.log(numbers[j]) // prints 1 2 3 4 5
+  j++
+}
+```
+
+## 4. The `forEach` loop
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+numbers.forEach(num => console.log(num))
+```
+
+The `forEach` loop is a high-order function (a function that takes a function as a parameter) that handles looping.
+The function that you pass a `forEach` loop is passed 3 parameters:
+
+* the current value in the array
+* the current index of the array
+* the array itself
+
+Here's an example that more clearly shows what's going on.
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+numbers.forEach((num, i, arr) => {
+  if (i === 0) {
+    console.log(arr)
+  }
+  console.log(`numbers[${i}] = ${num}`)
+})
+```
+
+A `forEach` loop is a great way to apply some function to each value in an array without having to worry about modifying
+the original values. Here's an example of squaring and logging each number in an array by passing a function to a `forEach` loop.
+
+```js
+const squareAndLog = (num, i) => {
+  const squared = num * num
+  console.log(`arr[${i}] = ${num} * ${num} = ${squared}`)
+}
+
+const numbers = [1, 2, 3, 4, 5]
+numbers.forEach(squareAndLog)
+```
+
+There are several other types of high-order functions that arrays have access to as well,
+so if you understand the `forEach` loop then you have a good foundation for working with some of the other
+common functions like `map`, `filter`, and `reduce`.
+
+## 5. The `for of` loop
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+for (let num of numbers) {
+  console.log(num)
+}
+```
+
+The `for of` loop is much like the `forEach` in the way it extracts out a single value from an array on each iteration.
+If all you need is a quick way to pull out an array value, this is the loop to go to!
+
+## Bonus: Recursion
+
+```js
+function loop(arr, i) {
+  if (arr.length === i) {
+    return;
+  }
+  console.log(arr[i])
+  loop(arr, ++i)
+}
+const numbers = [1, 2, 3, 4, 5]
+loop(numbers, 0) // prints 1 2 3 4 5
+```
+
+Okay, so I said there would only be 5 ways to loop, but I have to include recursion. Recursion is a looping technique where
+a function calls itself. While recursion doesn't use any specific looping function like the `for` loop variations or the `while` loop, it still
+allows you to iterate over an array.
+
+Recursive functions are most similar to a `while` loop since they will continue to call themselves until they reach
+some condition that causes them to stop. In this example, the function will `return` or stop calling itself when `arr.length === i`.
+
+Since each time the function is called `i` goes up by one, the function will step through and print each array value
+just like all the other loops!
+
+Recursion is a great topic to bring up with interviews, so I'll leave you with another example to help clarify how recursion works.
+In the next example, shows how to loop through an array backward and print every other value multiplied by 2.
+
+```js
+function loopBackwards(arr, i) {
+  // stop iterating when i
+  // has gotten below the first index
+  if (i < 0) {
+    return;
+  }
+  console.log(arr[i] * 2)
+  // keep decreasing the value of i
+  // to approach -1 each iteration
+  loopBackwards(arr, i - 2)
+}
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+// start the loop from the last index
+// of the array
+loopBackwards(numbers, numbers.length - 1) // prints 20 16 12 8 4
+```
+
+That's all it takes to loop through an array!
+
+## Wrapping up
+
+So with all these examples, which for loop should you use? And the answer is: **it depends**.
+Each loop is better or worse for certain contexts, so try out each one and see what fits your use case!

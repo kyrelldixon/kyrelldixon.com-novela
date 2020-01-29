@@ -1,0 +1,132 @@
+---
+title: Scrape Reddit Data Daily with Python and AWS Lambda
+author: Kyrell Dixon
+date: 2020-01-18
+hero: ./images/hero.jpg
+slug: scrape-reddit-with-python-and-lambda
+secret: true
+---
+
+https://www.reddit.com/r/learnpython/comments/eqhs49/automatically_scrape_website/
+[Determine lambda evocation cost](https://dashbird.io/lambda-cost-calculator/)
+https://github.com/serverless/examples/tree/master/aws-python-scheduled-cron
+https://serverless.com/blog/serverless-python-packaging/
+https://docs.aws.amazon.com/lambda/latest/dg/tutorial-scheduled-events-schedule-expressions.html
+
+This tutorial will show you how to deploy an AWS Lambda function with Serverless Framework that
+runs a cron job.
+
+## Prerequisites
+
+* You should have [Serverless Framework](https://serverless.com/) installed and set up with AWS
+* You need some version of Python 3 (3.6, 3.7, or 3.8)
+
+## Steps
+
+1. Create serverless project
+2. Set up venv and get `requests`
+3. Download JSON file for development
+4. Extract details
+5. Switch to fetching data
+6. Deploy api
+
+
+```bash
+serverless create --template=aws-python3 \
+--name scrape-reddit \
+--path scrape-reddit
+```
+
+```bash
+serverless deploy
+serverless invoke -f scrape-reddit --log
+```
+
+Download a subreddit JSON file
+
+```python
+import json
+
+def main(event, context):
+  with open("./funny.json") as f:
+    subreddit_json = json.load(f)
+
+  subreddit_posts = subreddit_json["data"]["children"]
+  body = []
+  for post in subreddit_posts:
+    details = {
+      "title": post["data"]["title"],
+      "upvotes": post["data"]["ups"],
+      "url": post["data"]["url"]
+    }
+    body.append(details)
+
+  body.sort(key=lambda post: post["upvotes"], reverse=True)
+
+  print(json.dumps(body[:10], indent=2))
+
+if __name__ == "__main__":
+  main('', '')
+```
+
+```python
+import json
+import requests
+
+URL = "https://www.reddit.com/r/reactjs.json"
+
+def main(event, context):
+  subreddit_response = requests.get(URL)
+  subreddit_json = subreddit_response.json()
+  
+  if subreddit_response.status_code != requests.codes.ok:
+    response = {
+      "statusCode": subreddit_json["error"],
+      "body": subreddit_json["message"]
+    }
+    return response
+
+  subreddit_posts = subreddit_json["data"]["children"]
+  body = []
+  for post in subreddit_posts:
+    details = {
+      "title": post["data"]["title"],
+      "upvotes": post["data"]["ups"],
+      "url": post["data"]["url"]
+    }
+    body.append(details)
+
+  body.sort(key=lambda post: post["upvotes"], reverse=True)
+
+  response = {
+    "statusCode": 200,
+    "body": json.dumps(body)
+  }
+
+  return response
+
+if __name__ == "__main__":
+  main('', '')
+```
+
+```yaml
+service: scrape-reddit
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  scrape-reddit:
+    handler: handler.main
+    events:
+    # Every day at 5pm
+     - schedule: cron(0 17 * * ? *)
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+```

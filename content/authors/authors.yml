@@ -1,15 +1,9 @@
 - name: Kyrell Dixon
   bio: |
-    Full stack developer 👨🏽‍💻, digital nomad 🌐. React, Elixir, Python.
-    Looking to join forces with a UI, UX, or Web designer.
-  avatar: ./avatars/kyrell-dixon.jpg
-  featured: true
+    Full-stack developer. Udemy instructor. Consultant. Mentor. Currently accepting client work and students.
+  avatar: ./avatars/kyrell-dixon.jpeg
   social:
-    - name: github
-      url: https://www.github.com/kyrelldixon
-    - name: twitter
-      url: https://www.twitter.com/kyrelldixon
-    - name: instagram
-      url: https://www.instagram.com/kyrell.dixon
-    - name: linkedin
-      url: https://www.linkedin.com/in/kyrell-dixon/
+    - url: https://twitter.com/kyrelldixon
+    - url: https://instagram.com/kyrell.dixon
+    - url: https://github.com/kyrelldixon
+  featured: true

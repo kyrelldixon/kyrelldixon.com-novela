@@ -1,0 +1,171 @@
+---
+title: How to display JSON data to a front-end app using Flask
+author: Kyrell Dixon
+date: 2020-01-30
+hero: ./images/hero.jpg
+excerpt: Learn multiple ways to get JSON data from a Flask server to a front-end interface
+secret: true
+---
+
+https://stackoverflow.com/questions/57965942/how-to-display-json-data-to-front-end-interface-using-flask
+
+There are two ways to get data from the server to a front-end application. You can embed data from the server into
+the front-end app, or you can send data to the front-end app either on request or in realtime.
+
+In this tutorial, I will show you how to use server-side rendering to embed JSON data into an app. I will also show you how
+to create an API endpoint and use a front-end app to request the JSON data.
+
+## Setup Project
+
+### Create Project Boilerplate
+
+```bash
+mkdir flask-json; cd flask-json
+mkdir templates static data
+touch app.py templates/index.html touch data/pets.json .flaskenv
+```
+
+> **Pro tip**: Open the file in Visual Studio Code and run `html:5` to automatically generate the file boilerplate.
+> You can press the `tab` key to navigate through each field and set the value
+
+`index.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Flask JSON Data Tutorial</title>
+</head>
+<body>
+  
+</body>
+</html>
+```
+
+Add this JSON data to `pets.json` in the data folder.
+
+`pets.json`
+```json
+{
+  "dogs": [
+    {
+      "name": "Fido",
+      "age": "3",
+      "breed": "Yorkshire Terrior"
+    }
+  ],
+  "cats": [
+    {
+      "name": "Fido",
+      "age": "3",
+      "breed": "Yorkshire Terrior"
+    }
+  ]
+}
+```
+
+`.flaskenv`
+```bash
+FLASK_APP=app
+FLASK_ENV=development
+```
+
+### Create Virtual Environment
+
+[Create `venv` docs](https://docs.python.org/3/tutorial/venv.html)
+
+```bash
+python -m venv venv
+cd venv
+source bin/activate
+pip install Flask python-dotenv
+```
+
+## Server-side Render
+
+You can send the `index.html` file down with the data embedded in the file.
+
+```python
+@app.route("/")
+def pets():
+  with open('./data/pets.json') as f:
+    pets = json.load(f)
+  return render_template("index.html", pets=pets)
+```
+
+With `render_template`, you are accessing Jinja, a python templating engine. Jinja allows you to get data
+from the python app to an HTML file in the `templates` folder.
+
+To pass in the data to the `index.html` file, you pass in the `pets` JSON data as a named parameter to `render_template`. From there you can pipe
+the data variable to the `tojson` function and it will convert it to a text string that is properly formatted as a JavaScript object.
+
+```html {10-13}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Flask JSON Data Tutorial</title>
+</head>
+<body>
+  <script>
+    const pets = {{ pets|tojson }}
+    console.log(pets)
+  </script>
+</body>
+</html>
+```
+
+Now all that's left is to start the server and look and the Browser Developer tools to make sure the data got logged!
+Do start the server run:
+
+```bash
+python app.py
+```
+
+## Client-side Fetch
+
+```python
+@app.route("/api/pets")
+def pets_api():
+  with open('./data/pets.json') as f:
+    pets = json.load(f)
+  return jsonify(pets)
+```
+
+```html
+<script>
+  const URL = 'http://127.0.0.1:5000/api/pets'
+  fetch(URL)
+    .then(res => res.json())
+    .then(pets => {
+      console.log(pets)
+    })
+</script>
+```
+
+Final `app.py`
+
+```python
+from flask import Flask, render_template, json, jsonify
+
+app = Flask(__name__, static_url_path="./static")
+
+@app.route("/")
+def pets():
+  with open('./data/pets.json') as f:
+    pets = json.load(f)
+  return render_template("index.html", pets=pets)
+
+@app.route("/api/pets")
+def pets_api():
+  with open('./data/pets.json') as f:
+    pets = json.load(f)
+  return jsonify(pets)
+
+if __name__ == "__main__":
+  app.run(debug=True)
+```

@@ -1,0 +1,19 @@
+---
+title: Working with data with AWS S3 with Python, Boto3, and AWS Lambda
+author: Kyrell Dixon
+date: 2020-01-25
+hero: ./images/hero.jpg
+excerpt: Learn how to read and write file data to AWS S3 with Python and Boto3 and deploy the code to a serverless function with AWS Lambda
+secret: true
+---
+
+[How could I use aws lambda to write file to s3 (python)?](https://stackoverflow.com/questions/48945389/how-could-i-use-aws-lambda-to-write-file-to-s3-python)
+[How to write a file or data to an S3 object using boto3](https://stackoverflow.com/questions/40336918/how-to-write-a-file-or-data-to-an-s3-object-using-boto3#comment80495999_40336919)
+[Boto3 Object Docs](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#object)
+[How do I read files from s3 bucket - Edureka](https://www.edureka.co/community/17558/python-aws-boto3-how-do-i-read-files-from-s3-bucket)
+[Lambda Context Object](https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html)
+[AWS Lambda Function Handler](https://docs.aws.amazon.com/lambda/latest/dg/python-programming-model-handler-types.html)
+[How to create folder with Boto3](https://stackoverflow.com/questions/1939743/amazon-s3-boto-how-to-create-a-folder)
+
+> I found that the S3 path shouldn't have a leading / otherwise an empty folder is created, essentially becoming //100001 so I think the line should read: s3_path = "100001/20180223/" + file_name
+
