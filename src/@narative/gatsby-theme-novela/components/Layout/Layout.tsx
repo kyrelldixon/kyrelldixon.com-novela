@@ -18,8 +18,9 @@ interface LayoutProps {
 }
 
 const navLinks = [
-  { to: '/projects', text: 'Projects' },
   { to: '/articles', text: 'Articles' },
+  // { to: '/projects', text: 'Projects' },
+  { to: '/contact', text: 'Contact' },
 ];
 
 /**
