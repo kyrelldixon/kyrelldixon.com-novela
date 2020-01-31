@@ -12,7 +12,7 @@ import ContactForm from "../components/ContactForm";
 const Contact = () => {
   return (
     <Layout>
-      <SEO title="Contact - Student Dev Coach" />
+      <SEO title="Contact - Kyrell Dixon" />
       <Section>
         <div style={{ marginTop: "100px" }}>
           <HeadingContainer>
