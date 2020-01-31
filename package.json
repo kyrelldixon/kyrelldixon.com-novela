@@ -12,7 +12,7 @@
     "react-dom": "^16.9.0"
   },
   "scripts": {
-    "start": "gatsby develop",
+    "start": "gatsby develop -H 0.0.0.0",
     "build": "gatsby build",
     "clean": "gatsby clean",
     "stage": "gatsby build && gatsby serve",
