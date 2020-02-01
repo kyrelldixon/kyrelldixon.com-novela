@@ -9,7 +9,6 @@ import mediaqueries from "@narative/gatsby-theme-novela/src/styles/media";
 import Heading from "@narative/gatsby-theme-novela/src/components/Headings";
 
 import Form from "../Form";
-import Button from "../Button";
 import ButtonArrow from "../Button/Button.Arrow";
 
 const validate = values => {
@@ -129,8 +128,12 @@ const ContactForm = () => {
             animation={animation}
             delay={baseDelay + 800}
           >
-            <Button
+            <ButtonArrow
+              as={'a'}
+              href={createCalendlyUrl(values)}
               isSubmitting={isSubmitting}
+              color="black"
+              type="submit"
               text="Submit"
             />
           </MobileButtonContainer>
