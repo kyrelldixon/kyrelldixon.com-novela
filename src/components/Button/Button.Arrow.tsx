@@ -16,6 +16,7 @@ interface ButtonArrowProps {
   text: string
   color?: string
   isSubmitting?: boolean
+  href?: string
 }
 
 /**
@@ -29,6 +30,7 @@ export default ({
   to,
   onClick,
   text,
+  href,
   color = 'white',
   isSubmitting,
 }: ButtonArrowProps) => {
@@ -40,10 +42,12 @@ export default ({
     <ArrowButton
       as={as}
       to={to}
+      href={href}
       onClick={onClick}
       color={fill || color}
       role="button"
       data-a11y="false"
+      target={as === 'a' ? "_blank" : ""}
     >
       {isSubmitting ? (
         <Spinner />
