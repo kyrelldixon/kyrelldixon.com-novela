@@ -6,12 +6,13 @@ import { keyframes } from "@emotion/core";
 
 interface ButtonProps {
   text: string
-  type?: string
+  type?: "button" | "reset" | "submit"
   isSubmitting?: boolean
+  disabled?: boolean
 }
 
-const Button = ({ text, type, isSubmitting }: ButtonProps) => (
-  <StyledButton type={type || 'submit'} role="button" aria-label={text} disabled={isSubmitting}>
+const Button = ({ text, type, isSubmitting, disabled }: ButtonProps) => (
+  <StyledButton type={type || 'submit'} role="button" aria-label={text} disabled={disabled}>
     {isSubmitting ? <Spinner /> : text}
   </StyledButton>
 )
