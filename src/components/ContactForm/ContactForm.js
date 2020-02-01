@@ -63,8 +63,17 @@ const ContactForm = () => {
     window.location.href = `mailto:${myEmail}?subject=${subject}&body=${formattedBody}`;
   };
 
+  const createCalendlyUrl = (values) => {
+    const baseUrl = 'https://calendly.com/kyrell-dixon'
+    const { name, email, details } = values;
+    const detailsEncoded = encodeURI(details)
+    const queryParams = `name=${name}&email=${email}&a1=${detailsEncoded}`
+
+    const url = `${baseUrl}?${queryParams}`
+    return url;
+  }
+
   const handleSubmit = (values, { setSubmitting }) => {
-    sendMail(values);
     setSubmitting(false);
   }
 
@@ -74,7 +83,7 @@ const ContactForm = () => {
       validate={validate}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, values }) => (
         <StyledFormikForm>
           <FormSection
             animation={animation}
@@ -108,6 +117,8 @@ const ContactForm = () => {
           </FormSection>
           <ButtonContainer animation={animation} delay={baseDelay + 800}>
             <ButtonArrow
+              as={'a'}
+              href={createCalendlyUrl(values)}
               isSubmitting={isSubmitting}
               color="black"
               type="submit"
