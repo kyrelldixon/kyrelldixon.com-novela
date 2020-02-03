@@ -1,0 +1,167 @@
+---
+title: How to setup Next.js with Tailwind CSS and TypeScript
+author: Kyrell Dixon
+date: 2020-02-02
+hero: ./images/hero.jpg
+slug: setup-nextjs-with-tailwindcss-and-typescript
+excerpt: Learn how to quickly configure a Next.js app with TypeScript and Tailwind CSS
+---
+
+This tutorial will show you how to set up a Next.js app with Tailwind CSS and TypeScript. At the end of the post, I will show you how to
+optionally use [Purgecss](https://www.purgecss.com/) to remove unused CSS styles.
+
+## 1. Bootstrap the project with Create Next App
+
+[Create Next App](https://nextjs.org/blog/create-next-app) is the Next.js equivalent of Create React App used to set up the boilerplate
+for a Next.js web app. Here we're using it along with [`with-typescript`](https://github.com/zeit/next.js/tree/canary/examples/with-typescript)
+from the Next.js example repo to set up TypeScript.
+
+```bash
+npx create-next-app next-tailwind-typescript-starter --example with-typescript
+cd next-tailwind-typescript-starter
+```
+
+## 2. Install Tailwind CSS Dependencies
+
+After getting the majority of the project boilerplate setup, we can start working on installing Tailwind. First, let's install the packages.
+
+```bash
+# With Yarn
+yarn add -D postcss-preset-env tailwindcss
+
+# With Npm
+npm i -D postcss-preset-env tailwindcss
+```
+
+You can optionally create a `tailwind.config.js` file by using `npx` to run the Tailwind CLI.
+
+```bash
+npx tailwind init
+```
+
+## 3. Setup PostCSS Build
+
+After installing Tailwind, you have to set it up to be built with PostCSS. First, create the config file. 
+
+```bash
+touch postcss.config.js
+```
+
+Then you just need to add Tailwind and the PostCSS Webpack preset to the plugins section.
+
+```js
+module.exports = {
+  plugins: [
+    'tailwindcss',
+    'postcss-preset-env',
+  ],
+}
+
+```
+
+The PostCSS plugin system expects plugins to be added as the `string` type. This is different than what the Tailwind docs
+recommend, so be sure to check out the Next.js [PostCSS docs](https://nextjs.org/docs/advanced-features/customizing-postcss-config#default-behavior) for more details.
+
+## 4. Add Tailwind to CSS file
+
+That's it for the set up! Now we can focus on getting the CSS into Next.js. First create a `styles` directory
+and an `index.css` file.
+
+```bash
+mkdir styles; touch styles/index.css
+```
+
+Now you can use the `@tailwind` directive to inject the `base`, `components`, and `utilities` styles into the CSS file.
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+```
+
+## 5. Import Global CSS
+
+All that's left is to import the `index.css` file into a component so Tailwind can be used throughout the app. You might be tempted to import the file in the `Layout` component,
+but you can **only** import stylesheets in the `pages/_app.{js,ts,jsx,tsx}` file.
+
+Since we're using TypeScript, let's create an `app.tsx` file. 
+
+```bash
+touch pages/_app.tsx
+```
+
+Inside of the `_app.tsx` file, we can create a custom App component that is passed `AppProps` and import
+the `index.css` file.
+
+```ts {4}
+import React from 'react'
+import { AppProps } from 'next/app'
+
+import '../styles/index.css'
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+
+export default MyApp
+
+```
+
+Now the entire web app has access to the Tailwind CSS classes!
+
+## 6. Optional: Configure Purgecss
+
+There are several things you can do to [minimize the CSS file size](https://tailwindcss.com/docs/controlling-file-size).
+One of the easiest ways to minimize the file size is to use Purgecss to remove any unused styles from the final CSS file.
+
+To set up Purgecss, first let's install it.
+
+```bash
+# With Yarn
+yarn add -D @fullhuman/postcss-purgecss
+
+# With npm
+npm i -D @fullhuman/postcss-purgecss
+```
+
+Now you can add the plugin and tell it to look for CSS class names in all JavaScript and TypeScript files in the `pages` and `components` directories.
+If a class name isn't used is one of these files, then it will remove the respective styles from the CSS file.
+
+```js {4-15}
+module.exports = {
+  plugins: [
+    'tailwindcss',
+    process.env.NODE_ENV === 'production'
+      ? [
+          '@fullhuman/postcss-purgecss',
+          {
+            content: [
+              './pages/**/*.{js,jsx,ts,tsx}',
+              './components/**/*.{js,jsx,ts,tsx}',
+            ],
+            defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+          },
+        ]
+      : undefined,
+    'postcss-preset-env',
+  ],
+}
+```
+
+There is also a check to ensure Purgecss is only added in production. Only adding Purgecss in production helps speed up development by removing
+the extra CSS processing.
+
+The final step is to whitelist the `base` and `components` styles so that Purgecss doesn't remove them. Here we can use a comment
+to whitelist both sections at the same time.
+
+```css {1,4}
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+@tailwind utilities;
+
+```
+
+That's the last of the setup! If you ran into any issues, you can check out the [Github repo](https://github.com/kyrelldixon/next-tailwind-typescript-starter) to view the source code for the final boilerplate.
